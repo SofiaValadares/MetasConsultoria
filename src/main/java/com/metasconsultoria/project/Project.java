@@ -1,6 +1,6 @@
-package br.metasconsultoria.projects;
+package com.metasconsultoria.project;
 
-import br.metasconsultoria.places.City;
+import com.metasconsultoria.place.City;
 
 import java.util.ArrayList;
 import java.util.List;

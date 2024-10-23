@@ -1,4 +1,4 @@
-package br.metasconsultoria.user;
+package com.metasconsultoria.user;
 
 import java.util.ArrayList;
 import java.util.List;

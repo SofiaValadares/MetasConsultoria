@@ -1,6 +1,6 @@
-package br.metasconsultoria.projects;
+package com.metasconsultoria.project;
 
-import br.metasconsultoria.user.Collaborator;
+import com.metasconsultoria.user.Collaborator;
 import java.util.Date;
 
 public class Report {

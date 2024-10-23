@@ -1,9 +1,8 @@
-package br.metasconsultoria.calendar;
+package com.metasconsultoria.calendar;
 
-
-import br.metasconsultoria.projects.Project;
-import br.metasconsultoria.user.Collaborator;
-import br.metasconsultoria.user.User;
+import com.metasconsultoria.projects.Project;
+import com.metasconsultoria.user.Collaborator;
+import com.metasconsultoria.user.User;
 
 import java.sql.Time;
 import java.util.Date;

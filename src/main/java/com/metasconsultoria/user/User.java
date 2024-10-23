@@ -1,4 +1,4 @@
-package br.metasconsultoria.user;
+package com.metasconsultoria.user;
 
 public class User {
     private int idUser;
