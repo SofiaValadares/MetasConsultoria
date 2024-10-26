@@ -31,10 +31,26 @@ CREATE TABLE Collaborator (
 
 
 CREATE TABLE Client (
-                        cod_user 		INT NOT NULL,
+                        cod_user        INT NOT NULL,
 
                         PRIMARY KEY (cod_user),
                         CONSTRAINT client_pk_user
                             FOREIGN KEY (cod_user) REFERENCES User(cod_user)
 );
 
+CREATE TABLE Municipio (
+                        cod_municipio       INT PRIMARY KEY,       
+                        nome VARCHAR(100)       NOT NULL,          
+                        estado VARCHAR(100)     NOT NULL         
+);
+
+
+CREATE TABLE Projeto (
+                        cod_projeto         INT PRIMARY KEY,                    
+                        nome VARCHAR(255)       NOT NULL,                     
+                        descricao               TEXT,                                 
+                        publico                 BOOLEAN,                                
+                        fk_prox_passos_prox_pa      INT,                     
+                        CONSTRAINT fk_prox_passos       FOREIGN KEY (fk_prox_passos_prox_pa)
+                            REFERENCES prox_passos (prox_passos_PK)     
+);
