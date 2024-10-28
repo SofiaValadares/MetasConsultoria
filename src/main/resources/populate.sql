@@ -20,7 +20,7 @@ CREATE TABLE Collaborator (
                               cod_user        INT NOT NULL,
 
                               PRIMARY KEY (cod_user),
-                              CONSTRAINT collaborator_pk_user
+                              CONSTRAINT collaborator_fk_user
                                   FOREIGN KEY (cod_user) REFERENCES User(cod_user),
 
                               supervised_by   INT,
@@ -29,28 +29,30 @@ CREATE TABLE Collaborator (
                                   FOREIGN KEY (supervised_by) REFERENCES Collaborator(cod_user)
 );
 
-
-CREATE TABLE Client (
-                        cod_user        INT NOT NULL,
-
-                        PRIMARY KEY (cod_user),
-                        CONSTRAINT client_pk_user
-                            FOREIGN KEY (cod_user) REFERENCES User(cod_user)
-);
-
 CREATE TABLE Municipio (
                         cod_municipio       INT NOT NULL AUTO_INCREMENT PRIMARY KEY,       
                         nome VARCHAR(100)       NOT NULL,          
                         estado VARCHAR(100)     NOT NULL         
 );
 
+CREATE TABLE Client (
+                        cod_user        INT NOT NULL,
+                        fk_city    INT NOT NULL,
+
+                        PRIMARY KEY (cod_user),
+                        CONSTRAINT client_fk_user
+                            FOREIGN KEY (cod_user) REFERENCES User(cod_user),
+
+                        CONSTRAINT client_fk_city
+                            FOREIGN KEY (fk_city) REFERENCES Municipio(cod_municipio)
+);
 
 CREATE TABLE Projeto (
                         cod_projeto         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,                    
                         nome VARCHAR(255)       NOT NULL,                     
                         descricao               TEXT,                                 
                         publico                 BOOLEAN,                                
-                        fk_prox_passos_prox_pa      INT,                     
+                        fk_prox_passos_prox_pa      INT,
                         CONSTRAINT fk_prox_passos       FOREIGN KEY (fk_prox_passos_prox_pa)
-                            REFERENCES prox_passos (prox_passos_PK)     
+                            REFERENCES prox_passos (prox_passos_PK)
 );
