@@ -1,5 +1,7 @@
 .footer {
     position: fixed;
+    display: flex;
+    justify-content: space-between;
     bottom: 0;
     background-color: #8F6E4D;
     width: 100%;
@@ -9,12 +11,37 @@
 }
 
 .footer_icons {
-    align-items: center;
-    top: 10%;
-    left: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 70%;
+    width: 50%;
+    margin-left: 14px;
 }
 
-.footer_icons img {
-    width: 30%;
-    height: 30%;
+.footer_icon {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.footer_icon img {
+    height: 24px;
+    margin-right: 10px;
+}
+
+.footer_icon p {
+    margin: 0;
+    font-family: 'Jura', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+    color: #F0E3D4;
+}
+
+.img {
+    position: absolute;
+    height: 100%;
+    width: auto;
+    cursor: pointer;
 }
