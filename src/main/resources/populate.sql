@@ -39,14 +39,14 @@ CREATE TABLE Client (
 );
 
 CREATE TABLE Municipio (
-                        cod_municipio       INT PRIMARY KEY,       
+                        cod_municipio       INT NOT NULL AUTO_INCREMENT PRIMARY KEY,       
                         nome VARCHAR(100)       NOT NULL,          
                         estado VARCHAR(100)     NOT NULL         
 );
 
 
 CREATE TABLE Projeto (
-                        cod_projeto         INT PRIMARY KEY,                    
+                        cod_projeto         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,                    
                         nome VARCHAR(255)       NOT NULL,                     
                         descricao               TEXT,                                 
                         publico                 BOOLEAN,                                
