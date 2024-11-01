@@ -1,4 +1,4 @@
-package com.metasconsultoria.place;
+package com.metasconsultoria.entities;
 
 public class City {
     private String nameCity;
