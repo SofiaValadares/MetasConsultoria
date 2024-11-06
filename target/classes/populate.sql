@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS DatabaseMetas;
+USE DatabaseMetas;
+
 CREATE TABLE User (
                       cod_user 		INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
                       name 			VARCHAR(40) NOT NULL,
@@ -26,7 +29,7 @@ CREATE TABLE Collaborator (
                                   FOREIGN KEY (supervised_by) REFERENCES Collaborator(cod_user)
 );
 
-CREATE TABLE Municipio (
+CREATE TABLE Municipality(
                            cod_municipio       INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                            nome VARCHAR(100)       NOT NULL,
                            estado VARCHAR(100)     NOT NULL
@@ -41,10 +44,10 @@ CREATE TABLE Client (
                             FOREIGN KEY (cod_user) REFERENCES User(cod_user),
 
                         CONSTRAINT client_pk_city
-                            FOREIGN KEY (pk_city) REFERENCES Municipio(cod_municipio)
+                            FOREIGN KEY (pk_city) REFERENCES Municipality(cod_municipio)
 );
 
-CREATE TABLE Projeto (
+CREATE TABLE Project (
                          cod_projeto         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                          nome VARCHAR(255)       NOT NULL,
                          descricao               TEXT,
@@ -81,3 +84,68 @@ INSERT INTO Collaborator(city, neighborhood, street, house_number, complement, p
                                                                                                                             ('Recife', 'Boa Vista', 'Rua do Hospício', 234, 'Sala 101', '81945678901', '81954321098', 4, 1),
                                                                                                                             ('Petrolina', 'Centro', 'Rua Pacífico da Luz', 789, 'Ed. Petrolina', '81956789012', '81943210987', 5, 1);
 
+INSERT INTO Municipality (nome, estado) VALUES
+                                         ('Recife', 'Pernambuco'),
+                                         ('Olinda', 'Pernambuco'),
+                                         ('Caruaru', 'Pernambuco'),
+                                         ('Petrolina', 'Pernambuco'),
+                                         ('João Pessoa', 'Paraíba'),
+                                         ('Campina Grande', 'Paraíba'),
+                                         ('Fortaleza', 'Ceará'),
+                                         ('Natal', 'Rio Grande do Norte'),
+                                         ('Maceió', 'Alagoas'),
+                                         ('Salvador', 'Bahia');
+
+
+INSERT INTO Client (cod_user, pk_city) VALUES
+                                           (1, 1),   
+                                           (2, 2),   
+                                           (3, 3),   
+                                           (4, 4),   
+                                           (5, 5),   
+                                           (6, 6),   
+                                           (7, 7),   
+                                           (8, 8),   
+                                           (9, 9),   
+                                           (10, 10); 
+
+INSERT INTO Project (nome, descricao, publico) VALUES
+                                                   ('Projeto de Pavimentação Urbana', 
+                                                   'Planejamento e execução de pavimentação de ruas e avenidas.', 
+                                                   TRUE),
+                                                
+                                                   ('Projeto de Iluminação Pública', 
+                                                   'Instalação de postes e lâmpadas LED em áreas de baixa iluminação.', 
+                                                   TRUE),
+                                                
+                                                   ('Plano Diretor de Desenvolvimento', 
+                                                   'Desenvolvimento de um plano diretor para orientar o crescimento urbano.', 
+                                                   FALSE),
+                                                
+                                                   ('Projeto de Saneamento Básico', 
+                                                   'Construção de redes de esgoto e estações de tratamento.', 
+                                                   TRUE),
+                                                
+                                                   ('Programa de Saúde Preventiva', 
+                                                   'Campanha de vacinação e consultas preventivas para a população.', 
+                                                   TRUE),
+                                                
+                                                   ('Iniciativa de Segurança Pública', 
+                                                   'Parceria com as forças de segurança para reduzir a criminalidade.', 
+                                                   FALSE),
+                                                
+                                                   ('Recuperação de Áreas Verdes', 
+                                                   'Reflorestamento e criação de parques em áreas degradadas.', 
+                                                   TRUE),
+                                                
+                                                   ('Projeto de Educação Ambiental', 
+                                                   'Campanhas educativas sobre preservação do meio ambiente.', 
+                                                   TRUE),
+                                                
+                                                   ('Modernização de Infraestrutura Digital', 
+                                                   'Implementação de fibra óptica e ampliação do acesso à internet.', 
+                                                   FALSE),
+                                                
+                                                   ('Aprimoramento de Transporte Público', 
+                                                   'Compra de novos ônibus e criação de faixas exclusivas.', 
+                                                   TRUE);

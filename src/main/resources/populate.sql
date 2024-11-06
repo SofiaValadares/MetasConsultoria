@@ -1,5 +1,5 @@
-CREATE DATABASE DB;
-use DB;
+CREATE DATABASE IF NOT EXISTS DatabaseMetas;
+USE DatabaseMetas;
 
 CREATE TABLE User (
                       cod_user 		INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -44,7 +44,7 @@ CREATE TABLE Client (
                             FOREIGN KEY (cod_user) REFERENCES User(cod_user),
 
                         CONSTRAINT client_pk_city
-                            FOREIGN KEY (pk_city) REFERENCES Municipio(cod_municipio)
+                            FOREIGN KEY (pk_city) REFERENCES Municipality(cod_municipio)
 );
 
 CREATE TABLE Project (
@@ -84,7 +84,7 @@ INSERT INTO Collaborator(city, neighborhood, street, house_number, complement, p
                                                                                                                             ('Recife', 'Boa Vista', 'Rua do Hospício', 234, 'Sala 101', '81945678901', '81954321098', 4, 1),
                                                                                                                             ('Petrolina', 'Centro', 'Rua Pacífico da Luz', 789, 'Ed. Petrolina', '81956789012', '81943210987', 5, 1);
 
-INSERT INTO Municipio (nome, estado) VALUES
+INSERT INTO Municipality (nome, estado) VALUES
                                          ('Recife', 'Pernambuco'),
                                          ('Olinda', 'Pernambuco'),
                                          ('Caruaru', 'Pernambuco'),
