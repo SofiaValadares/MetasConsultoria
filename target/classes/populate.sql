@@ -4,7 +4,7 @@ USE DatabaseMetas;
 CREATE TABLE User (
                       cod_user 		INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
                       name 			VARCHAR(40) NOT NULL,
-                      email 			VARCHAR(31) NOT NULL UNIQUE,
+                      email 		VARCHAR(31) NOT NULL UNIQUE,
                       password 		VARCHAR(16) NOT NULL
 );
 
@@ -12,46 +12,47 @@ CREATE TABLE Collaborator (
                               city            VARCHAR(40) NOT NULL,
                               neighborhood    VARCHAR(20) NOT NULL,
                               street          VARCHAR(40) NOT NULL,
-                              house_number    INT NOT NULL,
+                              house_number    INTEGER NOT NULL,
                               complement      VARCHAR(50),
                               phone1          VARCHAR(11) NOT NULL,
                               phone2          VARCHAR(11),
 
-                              cod_user        INT NOT NULL,
+                              cod_user        INTEGER NOT NULL,
 
                               PRIMARY KEY (cod_user),
                               CONSTRAINT collaborator_pk_user
                                   FOREIGN KEY (cod_user) REFERENCES User(cod_user),
 
-                              supervised_by   INT,
+                              supervised_by   INTEGER,
 
                               CONSTRAINT fk_supervisor
                                   FOREIGN KEY (supervised_by) REFERENCES Collaborator(cod_user)
 );
 
-CREATE TABLE Municipality(
-                           cod_municipio       INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                           nome VARCHAR(100)       NOT NULL,
-                           estado VARCHAR(100)     NOT NULL
+CREATE TABLE City (
+                           cod_city                INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                           name                    VARCHAR(100) NOT NULL,
+                           state                   VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Client (
-                        cod_user        INT NOT NULL,
-                        pk_city    INT NOT NULL,
+                        cod_user        INTEGER NOT NULL,
+                        pk_city         INTEGER NOT NULL,
 
                         PRIMARY KEY (cod_user),
                         CONSTRAINT client_pk_user
                             FOREIGN KEY (cod_user) REFERENCES User(cod_user),
 
                         CONSTRAINT client_pk_city
-                            FOREIGN KEY (pk_city) REFERENCES Municipality(cod_municipio)
+                            FOREIGN KEY (pk_city) REFERENCES City(cod_city)
 );
 
 CREATE TABLE Project (
-                         cod_projeto         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                         nome VARCHAR(255)       NOT NULL,
-                         descricao               TEXT,
-                         publico                 BOOLEAN
+                         cod_project        INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                         name               VARCHAR(255) NOT NULL,
+                         description        VARCHAR(1500),
+                         public             BIT DEFAULT 0,
+                         date               DATE
 
 );
 
@@ -84,7 +85,7 @@ INSERT INTO Collaborator(city, neighborhood, street, house_number, complement, p
                                                                                                                             ('Recife', 'Boa Vista', 'Rua do Hospício', 234, 'Sala 101', '81945678901', '81954321098', 4, 1),
                                                                                                                             ('Petrolina', 'Centro', 'Rua Pacífico da Luz', 789, 'Ed. Petrolina', '81956789012', '81943210987', 5, 1);
 
-INSERT INTO Municipality (nome, estado) VALUES
+INSERT INTO City (name, state) VALUES
                                          ('Recife', 'Pernambuco'),
                                          ('Olinda', 'Pernambuco'),
                                          ('Caruaru', 'Pernambuco'),
@@ -109,43 +110,43 @@ INSERT INTO Client (cod_user, pk_city) VALUES
                                            (9, 9),   
                                            (10, 10); 
 
-INSERT INTO Project (nome, descricao, publico) VALUES
+INSERT INTO Project (name, description, public) VALUES
                                                    ('Projeto de Pavimentação Urbana', 
                                                    'Planejamento e execução de pavimentação de ruas e avenidas.', 
-                                                   TRUE),
+                                                   1),
                                                 
                                                    ('Projeto de Iluminação Pública', 
                                                    'Instalação de postes e lâmpadas LED em áreas de baixa iluminação.', 
-                                                   TRUE),
+                                                   1),
                                                 
                                                    ('Plano Diretor de Desenvolvimento', 
                                                    'Desenvolvimento de um plano diretor para orientar o crescimento urbano.', 
-                                                   FALSE),
+                                                   0),
                                                 
                                                    ('Projeto de Saneamento Básico', 
                                                    'Construção de redes de esgoto e estações de tratamento.', 
-                                                   TRUE),
+                                                   1),
                                                 
                                                    ('Programa de Saúde Preventiva', 
                                                    'Campanha de vacinação e consultas preventivas para a população.', 
-                                                   TRUE),
+                                                   1),
                                                 
                                                    ('Iniciativa de Segurança Pública', 
                                                    'Parceria com as forças de segurança para reduzir a criminalidade.', 
-                                                   FALSE),
+                                                   0),
                                                 
                                                    ('Recuperação de Áreas Verdes', 
                                                    'Reflorestamento e criação de parques em áreas degradadas.', 
-                                                   TRUE),
+                                                   1),
                                                 
                                                    ('Projeto de Educação Ambiental', 
                                                    'Campanhas educativas sobre preservação do meio ambiente.', 
-                                                   TRUE),
+                                                   1),
                                                 
                                                    ('Modernização de Infraestrutura Digital', 
                                                    'Implementação de fibra óptica e ampliação do acesso à internet.', 
-                                                   FALSE),
+                                                   0),
                                                 
                                                    ('Aprimoramento de Transporte Público', 
                                                    'Compra de novos ônibus e criação de faixas exclusivas.', 
-                                                   TRUE);
+                                                   1);

@@ -51,7 +51,7 @@ public class User {
 
     public static User getUserById(Connection conn, int id) {
         User user = null;
-        String sql = "SELECT cod_user, name, email, password FROM User WHERE cod_user = ?";
+        String sql = "SELECT * FROM User WHERE cod_user = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
