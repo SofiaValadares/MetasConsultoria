@@ -17,8 +17,15 @@ public class Project {
     private Date date;
     private int idCity;
 
-    public Project() {
+    public Project() {}
 
+    public Project(int idProject, String name, String description, boolean publicProject, Date date, int idCity) {
+        this.idProject = idProject;
+        this.name = name;
+        this.description = description;
+        this.publicProject = publicProject;
+        this.date = date;
+        this.idCity = idCity;
     }
 
     public int getIdProject() {
@@ -67,62 +74,6 @@ public class Project {
 
     public void setIdCity(int idCity) {
         this.idCity = idCity;
-    }
-
-    public static List<Project> getProjects(Connection conn) {
-        List<Project> projects = new ArrayList<>();
-        String sql = "SELECT * FROM Project";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Project project = new Project();
-                project.setIdProject(rs.getInt("cod_project"));
-                project.setName(rs.getString("name"));
-                project.setDescription(rs.getString("description"));
-                project.setPublicProject(rs.getBoolean("public"));
-
-                java.sql.Date sqlDate = rs.getDate("date");
-                if (sqlDate != null) {
-                    project.setDate(new Date(sqlDate.getTime()));
-                }
-
-                projects.add(project);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return projects;
-    }
-
-    public static Project getProjectById(Connection conn, int id) {
-        Project project = null;
-        String sql = "SELECT * FROM Project WHERE cod_project = ?";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    project = new Project();
-                    project.setIdProject(rs.getInt("cod_project"));
-                    project.setName(rs.getString("name"));
-                    project.setDescription(rs.getString("description"));
-                    project.setPublicProject(rs.getBoolean("public"));
-                    project.setIdCity(rs.getInt("fk_city"));
-
-                    java.sql.Date sqlDate = rs.getDate("date");
-                    if (sqlDate != null) {
-                        project.setDate(new Date(sqlDate.getTime()));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return project;
     }
 
 }

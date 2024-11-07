@@ -40,26 +40,4 @@ public class City {
         this.idCity = idCity;
     }
 
-
-    public static List<City> getCities(Connection conn) {
-        List<City> cities = new ArrayList<>();
-        String sql = "SELECT * FROM City";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    City city = new City();
-                    city.setIdCity(rs.getInt("cod_city")); // Corrigido para a coluna correta
-                    city.setName(rs.getString("name"));
-                    city.setState(rs.getString("state"));
-                    cities.add(city);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return cities;
-    }
-
 }
