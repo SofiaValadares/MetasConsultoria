@@ -1,5 +1,6 @@
 package com.metasconsultoria.entities;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 

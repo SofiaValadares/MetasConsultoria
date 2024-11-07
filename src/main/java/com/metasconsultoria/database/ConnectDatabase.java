@@ -49,7 +49,7 @@ public class ConnectDatabase {
     // Método para verificar se o banco de dados está vazio (ou seja, se as tabelas não existem)
     private static boolean isDatabaseEmpty(Connection conn) {
         try (Statement stmt = conn.createStatement()) {
-            stmt.execute("SELECT 1 FROM User LIMIT 1;"); // Tente selecionar da tabela User como teste
+            stmt.execute("USE DatabaseMetas"); // Tente selecionar da tabela User como teste
             return false; // Se a consulta for bem-sucedida, o banco de dados não está vazio
         } catch (SQLException e) {
             return true; // Se ocorrer um erro, assumimos que o banco de dados está vazio (tabelas não existem)
