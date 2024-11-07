@@ -52,8 +52,12 @@ CREATE TABLE Project (
                          name               VARCHAR(255) NOT NULL,
                          description        VARCHAR(1500),
                          public             BIT DEFAULT 0,
-                         date               DATE
+                         date               DATE,
 
+                         fk_city            INTEGER NOT NULL,
+
+                         CONSTRAINT project_fk_city
+                             FOREIGN KEY (fk_city) REFERENCES City(cod_city)
 );
 
 CREATE TABLE R_Collaborator_Client_Project (
@@ -70,7 +74,7 @@ CREATE TABLE R_Collaborator_Client_Project (
                                                     FOREIGN KEY (fk_client) REFERENCES Client(cod_user),
 
                                                 CONSTRAINT r_collaborator_client_project_fk_project
-                                                    FOREIGN KEY (fk_project) REFERENCES Project(cod_user)
+                                                    FOREIGN KEY (fk_project) REFERENCES Project(cod_project)
 );
 
 INSERT INTO User (name, email, password) VALUES
@@ -115,7 +119,7 @@ INSERT INTO City (name, state) VALUES
                                          ('Salvador', 'Bahia');
 
 
-INSERT INTO Client (cod_user, pk_city) VALUES
+INSERT INTO Client (cod_user, fk_city) VALUES
                                            (1, 1),   
                                            (2, 2),   
                                            (3, 3),   
@@ -125,45 +129,89 @@ INSERT INTO Client (cod_user, pk_city) VALUES
                                            (7, 7),   
                                            (8, 8),   
                                            (9, 9),   
-                                           (10, 10); 
+                                           (10, 10);
 
-INSERT INTO Project (name, description, public) VALUES
-                                                   ('Projeto de Pavimentação Urbana', 
-                                                   'Planejamento e execução de pavimentação de ruas e avenidas.', 
-                                                   1),
-                                                
-                                                   ('Projeto de Iluminação Pública', 
-                                                   'Instalação de postes e lâmpadas LED em áreas de baixa iluminação.', 
-                                                   1),
-                                                
-                                                   ('Plano Diretor de Desenvolvimento', 
-                                                   'Desenvolvimento de um plano diretor para orientar o crescimento urbano.', 
-                                                   0),
-                                                
-                                                   ('Projeto de Saneamento Básico', 
-                                                   'Construção de redes de esgoto e estações de tratamento.', 
-                                                   1),
-                                                
-                                                   ('Programa de Saúde Preventiva', 
-                                                   'Campanha de vacinação e consultas preventivas para a população.', 
-                                                   1),
-                                                
-                                                   ('Iniciativa de Segurança Pública', 
-                                                   'Parceria com as forças de segurança para reduzir a criminalidade.', 
-                                                   0),
-                                                
-                                                   ('Recuperação de Áreas Verdes', 
-                                                   'Reflorestamento e criação de parques em áreas degradadas.', 
-                                                   1),
-                                                
-                                                   ('Projeto de Educação Ambiental', 
-                                                   'Campanhas educativas sobre preservação do meio ambiente.', 
-                                                   1),
-                                                
-                                                   ('Modernização de Infraestrutura Digital', 
-                                                   'Implementação de fibra óptica e ampliação do acesso à internet.', 
-                                                   0),
-                                                
-                                                   ('Aprimoramento de Transporte Público', 
-                                                   'Compra de novos ônibus e criação de faixas exclusivas.', 
-                                                   1);
+INSERT INTO Project (name, description, public, fk_city) VALUES
+('Projeto de Infraestrutura Ferroviária', 'Construção de uma nova linha ferroviária para transporte de carga.', 0, 1),
+('Plano de Despoluição de Rios', 'Desenvolvimento de medidas para a limpeza de rios poluídos.', 0, 2),
+('Iniciativa de Segurança Rodoviária', 'Melhorias em sinalização e monitoramento de vias para reduzir acidentes.', 0, 3),
+('Projeto de Digitalização de Documentos Públicos', 'Conversão de arquivos físicos em digitais para acesso remoto.', 0, 4),
+('Programa de Modernização Portuária', 'Expansão e modernização de portos para aumento da capacidade.', 0, 5),
+('Desenvolvimento de Ferramentas de Governança', 'Criação de software para gerenciamento eficiente de recursos públicos.', 0, 6),
+('Estudo de Impacto Ambiental para Construção', 'Análises detalhadas para minimizar o impacto ambiental.', 0, 7),
+('Reforma de Políticas de Subsídio Habitacional', 'Avaliação e reformulação de programas de subsídio habitacional.', 0, 8),
+('Centro de Estudos Urbanos', 'Criação de um centro de pesquisa para desenvolvimento urbano.', 0, 9),
+('Plano de Eficiência Hídrica', 'Instalação de sistemas de coleta de água de chuva e economia hídrica.', 0, 10),
+('Projeto de Expansão de Aeroportos', 'Ampliação de pistas e terminais em aeroportos estratégicos.', 0, 1),
+('Iniciativa de Integração Regional', 'Desenvolvimento de corredores de transporte entre cidades próximas.', 0, 2),
+('Plano de Controle de Poluição Sonora', 'Implementação de medidas para reduzir ruídos urbanos.', 0, 3),
+('Desenvolvimento de Zonas Francas', 'Criação de áreas livres de impostos para estímulo econômico.', 0, 4),
+('Reestruturação de Hospitais Públicos', 'Melhoria na infraestrutura e equipamentos médicos.', 0, 5),
+('Projeto de Renovação da Malha Viária', 'Reforma de estradas e avenidas principais.', 0, 6),
+('Projeto de Modernização de Sistemas de Iluminação', 'Substituição de sistemas antigos por tecnologia LED.', 0, 7),
+('Plano de Expansão de Ensino Superior', 'Construção de novas universidades e campus.', 0, 8),
+('Desenvolvimento de Centros de Pesquisa Científica', 'Criação de novos centros de inovação e pesquisa.', 0, 9),
+('Projeto de Reurbanização de Bairros', 'Revitalização de áreas residenciais com novos serviços.', 0, 10),
+('Plano de Melhoria de Redes de Saneamento', 'Expansão de sistemas de esgoto para áreas não atendidas.', 0, 1),
+('Iniciativa de Conectividade Rural', 'Instalação de redes de internet em áreas rurais.', 0, 2),
+('Projeto de Fortalecimento de Comunidades', 'Criação de programas de apoio a comunidades locais.', 0, 3),
+('Projeto de Gerenciamento de Crises Urbanas', 'Planejamento de estratégias de resposta rápida para desastres.', 0, 4),
+('Desenvolvimento de Zona de Proteção Ambiental', 'Criação de novas áreas de preservação natural.', 0, 5),
+('Plano de Segurança Digital para Órgãos Públicos', 'Implementação de medidas de cibersegurança.', 0, 6),
+('Projeto de Ampliação de Redes de Transporte Subterrâneo', 'Construção de novas linhas de metrô.', 0, 7),
+('Plano de Conservação de Estruturas Históricas', 'Preservação e restauração de patrimônios culturais.', 0, 8),
+('Projeto de Requalificação de Áreas Industriais', 'Transformação de antigas zonas industriais em espaços modernos.', 0, 9),
+('Plano de Incentivo à Indústria Sustentável', 'Criação de políticas para atrair indústrias verdes.', 0, 10),
+('Programa de Educação Inclusiva', 'Criação de escolas e programas adaptados para necessidades especiais.', 1, 1),
+('Projeto de Acessibilidade em Espaços Públicos', 'Melhorias em rampas, elevadores e sinalizações.', 1, 2),
+('Plano de Promoção de Esportes Amadores', 'Incentivo a práticas esportivas em bairros.', 1, 3),
+('Projeto de Hortas Comunitárias', 'Criação de hortas em espaços urbanos para a comunidade.', 1, 4),
+('Campanha de Conscientização sobre Reciclagem', 'Distribuição de materiais educativos sobre reciclagem.', 1, 5),
+('Projeto de Preservação de Fauna e Flora', 'Programas de proteção a espécies nativas.', 1, 1),
+('Aprimoramento de Serviços de Transporte', 'Melhoria na qualidade e frequência de transporte público.', 1, 2),
+('Projeto de Segurança em Comunidades', 'Patrulhas comunitárias e instalação de câmeras de segurança.', 1, 3),
+('Campanha de Prevenção a Doenças', 'Distribuição de materiais educativos sobre higiene e saúde.', 1, 4),
+('Projeto de Sustentabilidade Energética', 'Uso de fontes de energia renovável em espaços públicos.', 1, 5);
+
+-- Inserindo registros na tabela de relacionamento R_Collaborator_Client_Project
+INSERT INTO R_Collaborator_Client_Project (fk_collaborator, fk_client, fk_project) VALUES
+                                                                                       (1, 1, 1),
+                                                                                       (2, 2, 2),
+                                                                                       (3, 3, 3),
+                                                                                       (4, 4, 4),
+                                                                                       (5, 5, 5),
+                                                                                       (1, 6, 6),
+                                                                                       (2, 7, 7),
+                                                                                       (3, 8, 8),
+                                                                                       (4, 9, 9),
+                                                                                       (5, 10, 10),
+                                                                                       (1, 1, 11),
+                                                                                       (2, 2, 12),
+                                                                                       (3, 3, 13),
+                                                                                       (4, 4, 14),
+                                                                                       (5, 5, 15),
+                                                                                       (1, 6, 16),
+                                                                                       (2, 7, 17),
+                                                                                       (3, 8, 18),
+                                                                                       (4, 9, 19),
+                                                                                       (5, 10, 20),
+                                                                                       (1, 1, 21),
+                                                                                       (2, 2, 22),
+                                                                                       (3, 3, 23),
+                                                                                       (4, 4, 24),
+                                                                                       (5, 5, 25),
+                                                                                       (1, 6, 26),
+                                                                                       (2, 7, 27),
+                                                                                       (3, 8, 28),
+                                                                                       (4, 9, 29),
+                                                                                       (5, 10, 30),
+                                                                                       (1, 1, 31),
+                                                                                       (2, 2, 32),
+                                                                                       (3, 3, 33),
+                                                                                       (4, 4, 34),
+                                                                                       (5, 5, 35),
+                                                                                       (1, 6, 36),
+                                                                                       (2, 7, 37),
+                                                                                       (3, 8, 38),
+                                                                                       (4, 9, 39),
+                                                                                       (5, 10, 40);

@@ -1,7 +1,10 @@
 import com.metasconsultoria.database.ConnectDatabase;
+import com.metasconsultoria.entities.City;
+import com.metasconsultoria.entities.Project;
 import com.metasconsultoria.entities.User;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class Main {
 
@@ -10,6 +13,9 @@ public class Main {
             if (conn != null) {
                 System.out.println("Banco de dados pronto para uso.");
 
+                List<Project> projects = Project.getProjects(conn);
+
+                List<City> cities = City.getCities(conn);
 
                 User user = User.getUserByLogin(conn, "andresa@exemplo.com", "Oi12345!");
 

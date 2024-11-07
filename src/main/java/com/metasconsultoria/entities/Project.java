@@ -5,16 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 
 public class Project {
     private int idProject;
     private String name;
     private String description;
-    private List<NextStep> nextSteps = new ArrayList<>();
     private boolean publicProject;
-    private List<Report> reports = new ArrayList<>();
-    private City location;
+    private Date date;
+    private int idCity;
 
     public Project() {
 
@@ -44,14 +45,6 @@ public class Project {
         this.description = description;
     }
 
-    public List<NextStep> getNextSteps() {
-        return nextSteps;
-    }
-
-    public void setNextSteps(List<NextStep> nextSteps) {
-        this.nextSteps = nextSteps;
-    }
-
     public boolean isPublicProject() {
         return publicProject;
     }
@@ -60,20 +53,48 @@ public class Project {
         this.publicProject = publicProject;
     }
 
-    public List<Report> getReports() {
-        return reports;
+    public Date getDate() {
+        return date;
     }
 
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public City getLocation() {
-        return location;
+    public int getIdCity() {
+        return idCity;
     }
 
-    public void setLocation(City location) {
-        this.location = location;
+    public void setIdCity(int idCity) {
+        this.idCity = idCity;
+    }
+
+    public static List<Project> getProjects(Connection conn) {
+        List<Project> projects = new ArrayList<>();
+        String sql = "SELECT * FROM Project";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Project project = new Project();
+                project.setIdProject(rs.getInt("cod_project"));
+                project.setName(rs.getString("name"));
+                project.setDescription(rs.getString("description"));
+                project.setPublicProject(rs.getBoolean("public"));
+
+                java.sql.Date sqlDate = rs.getDate("date");
+                if (sqlDate != null) {
+                    project.setDate(new Date(sqlDate.getTime()));
+                }
+
+                projects.add(project);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return projects;
     }
 
     public static Project getProjectById(Connection conn, int id) {
@@ -88,13 +109,20 @@ public class Project {
                     project.setIdProject(rs.getInt("cod_project"));
                     project.setName(rs.getString("name"));
                     project.setDescription(rs.getString("description"));
+                    project.setPublicProject(rs.getBoolean("public"));
+                    project.setIdCity(rs.getInt("fk_city"));
+
+                    java.sql.Date sqlDate = rs.getDate("date");
+                    if (sqlDate != null) {
+                        project.setDate(new Date(sqlDate.getTime()));
+                    }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-
         return project;
     }
+
 }
