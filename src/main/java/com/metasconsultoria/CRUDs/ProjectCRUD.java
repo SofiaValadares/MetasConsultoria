@@ -74,6 +74,7 @@ public class ProjectCRUD {
                 project.setName(rs.getString("name"));
                 project.setDescription(rs.getString("description"));
                 project.setPublicProject(rs.getBoolean("public"));
+                project.setIdCity(rs.getInt("fk_city"));
 
                 java.sql.Date sqlDate = rs.getDate("date");
                 if (sqlDate != null) {
@@ -103,6 +104,7 @@ public class ProjectCRUD {
                 project.setName(rs.getString("name"));
                 project.setDescription(rs.getString("description"));
                 project.setPublicProject(rs.getBoolean("public"));
+                project.setIdCity(rs.getInt("fk_city"));
 
                 java.sql.Date sqlDate = rs.getDate("date");
                 if (sqlDate != null) {
@@ -117,6 +119,40 @@ public class ProjectCRUD {
 
         return projects;
     }
+
+    public static List<Project> getProjectsClient(Connection conn, int idUser) {
+        List<Project> projects = new ArrayList<>();
+        String sql = "SELECT p.cod_project, p.name, p.description, p.public, p.date, p.fk_city FROM Project p" +
+                "JOIN R_Collaborator_Client_Project r on r.fk_project = p.cod_project" +
+                "WHERE r.fk_client = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idUser);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Project project = new Project();
+                    project.setIdProject(rs.getInt("cod_project"));
+                    project.setName(rs.getString("name"));
+                    project.setDescription(rs.getString("description"));
+                    project.setPublicProject(rs.getBoolean("public"));
+                    project.setIdCity(rs.getInt("fk_city"));
+
+                    java.sql.Date sqlDate = rs.getDate("date");
+                    if (sqlDate != null) {
+                        project.setDate(new Date(sqlDate.getTime()));
+                    }
+
+                    projects.add(project);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return projects;
+    }
+
 
 
     public static void updateProject(Connection conn, Project project) {
