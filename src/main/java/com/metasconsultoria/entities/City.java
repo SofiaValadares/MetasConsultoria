@@ -16,6 +16,11 @@ public class City {
 
     }
 
+    public City(String name, String state) {
+        this.name = name;
+        this.state = state;
+    }
+
     public String getState() {
         return state;
     }

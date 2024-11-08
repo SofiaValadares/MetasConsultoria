@@ -19,8 +19,7 @@ public class Project {
 
     public Project() {}
 
-    public Project(int idProject, String name, String description, boolean publicProject, Date date, int idCity) {
-        this.idProject = idProject;
+    public Project(String name, String description, boolean publicProject, Date date, int idCity) {
         this.name = name;
         this.description = description;
         this.publicProject = publicProject;
