@@ -120,7 +120,7 @@ public class ProjectCRUD {
         return projects;
     }
 
-    public static List<Project> getProjectsClient(Connection conn, int idUser) {
+    public static List<Project> getProjectsByClient(Connection conn, int idUser) {
         List<Project> projects = new ArrayList<>();
         String sql = "SELECT p.cod_project, p.name, p.description, p.public, p.date, p.fk_city FROM Project p" +
                 "JOIN R_Collaborator_Client_Project r on r.fk_project = p.cod_project" +
