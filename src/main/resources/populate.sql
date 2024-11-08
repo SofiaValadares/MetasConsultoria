@@ -77,6 +77,62 @@ CREATE TABLE R_Collaborator_Client_Project (
                                                     FOREIGN KEY (fk_project) REFERENCES Project(cod_project)
 );
 
+-- criação da tabela proiximos passos
+CREATE TABLE Next_Steps (
+    next_steps_pk           INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    next_steps              VARCHAR(255) NOT NULL,
+    fk_project_cod_project  INTEGER NOT NULL,
+
+    CONSTRAINT next_steps_fk_project
+        FOREIGN KEY (fk_project_cod_project) REFERENCES Project(cod_project)
+);
+
+--criação da tabela  reserva 
+CREATE TABLE Reservation (
+    reservation_id             INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    start_time                 TIME NOT NULL,
+    end_time                   TIME NOT NULL,
+    day                        DATE NOT NULL,
+    reserved_by                INTEGER NOT NULL,
+    cod_project        INTEGER NOT NULL,
+
+
+    fk_collaborator_cod_user    INTEGER NOT NULL,
+    fk_client_cod_user        INTEGER NOT NULL,
+
+    CONSTRAINT fk_reservation_collaborator
+        FOREIGN KEY (fk_collaborator_cod_user) REFERENCES Collaborator(cod_user),
+    
+    CONSTRAINT fk_reservation_client
+        FOREIGN KEY (fk_client_cod_user) REFERENCES Client(cod_user)
+);
+
+--Criação da tabela relatório:
+CREATE TABLE Report (
+    cod_report      INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    report_date     DATE NOT NULL,
+    description     VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE Collaborator_Project_Report (
+    fk_collaborator_user_id    INTEGER NOT NULL,
+    fk_project_id              INTEGER NOT NULL,
+    fk_report_id               INTEGER NOT NULL,
+
+    PRIMARY KEY (fk_collaborator_user_id, fk_project_id, fk_report_id),
+
+    CONSTRAINT fk_cpr_collaborator
+        FOREIGN KEY (fk_collaborator_user_id) REFERENCES Collaborator(cod_user),
+    
+    CONSTRAINT fk_cpr_project
+        FOREIGN KEY (fk_project_id) REFERENCES Project(cod_project),
+    
+    CONSTRAINT fk_cpr_report
+        FOREIGN KEY (fk_report_id) REFERENCES Report(cod_report)
+);
+
+
 INSERT INTO User (name, email, password) VALUES
                                              ('Andresa', 'andresa@exemplo.com', 'Oi12345!'),
                                              ('Carlos', 'carlos@exemplo.com', 'SenhaSegura1'),
