@@ -1,66 +1,38 @@
-# README - Projeto Metas Consultoria
+# METAS CONSULTORIA
+A Metas Consultoria é uma empresa que presta serviços de consultoria em gestão pública, focando principalmente na área da saúde. A empresa atua na gestão de Secretarias de Saúde em municípios, abrangendo tanto a atenção especializada (hospitais) quanto a atenção primária (unidades básicas de saúde). Entre as atividades principais estão o planejamento orçamentário e de ações para implementação de projetos como construção de hospitais, ampliação de serviços de saúde, e projetos de expansão de unidades de saúde.
 
-Este documento fornece um guia detalhado para instalar o Docker, configurar um container MySQL e gerenciá-lo. Essas instruções ajudarão a garantir que o ambiente esteja pronto para o desenvolvimento e testes do projeto **Metas Consultoria**.
+Além disso, a consultoria inclui a captação de projetos e recursos, analisando portarias e publicações ministeriais para identificar oportunidades de financiamento para aquisição de equipamentos e serviços necessários aos municípios. Os clientes da Metas Consultoria geralmente são prefeitos e gestores municipais, que contratam os serviços para planejamento, execução e monitoramento de ações ao longo do mandato.
+
+# HUB METAS CONSULTORIA
+Nossa equipe desenvolveu um sistema de acompanhamento de projetos para a Metas Consultoria, apresentando-o como um MVP (Produto Mínimo Viável). Neste repositório, você encontrará todos os arquivos relacionados ao projeto.
+
+Para testar o repositório localmente, siga as instruções detalhadas no arquivo README.
+
+## Feramentas Ultilizadas
+IDEs: VS Code, IntelliJ IDEA, DBearver, Data Grip, WebStorm.
+Linguagen: Java, MySQL, Javascript, HTML e CSS
+Framework: React
+Conexão com Banco de Dados: JBDC
 
 ## Pré-requisitos
+1. Ter o [Java](https://www.oracle.com/br/java/) instalado em sua máquina.
+2. Ter o [Docker](https://docs.docker.com/desktop/install/windows-install/) instalado em sua máquina.
 
-Antes de começar, verifique se você tem os seguintes pré-requisitos:
+Para instalar qualquer um dos pré-requisitos, basta clicar no nome destacado em azul para ser redirecionado à documentação oficial da ferramenta.
 
-- **Sistema Operacional**: Windows, macOS ou uma distribuição Linux compatível (Ubuntu, Debian, etc.).
-- **Acesso de Administrador/Sudo**: Para instalar e gerenciar o Docker.
+# INSTALANDO REPOSITORIO NA MAQUINA
+Abra seu terminal e execulte o seguinte comando para clonar o repositorio na sua maquina
 
-## Instalação do Docker
+     ```bash
+     git clone <URL_DO_REPOSITORIO>
+     ```
 
-### 1. Instruções para Ubuntu/Linux
+Com os arquivos na sua maquina navegue ate a pasta do projeto
 
-Para usuários de sistemas baseados em Debian (Ubuntu, por exemplo), siga as instruções abaixo:
+     ```bash
+     cd <NOME_DA_PASTA_DO_PROJETO>
+     ```
 
-1. **Atualize os pacotes existentes**:
-   ```bash
-   sudo apt update
-   ```
-
-2. **Instale dependências necessárias**:
-   ```bash
-   sudo apt install apt-transport-https ca-certificates curl software-properties-common
-   ```
-
-3. **Adicione a chave GPG oficial do Docker**:
-   ```bash
-   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-   ```
-
-4. **Adicione o repositório Docker**:
-   ```bash
-   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-   ```
-
-5. **Instale o Docker**:
-   ```bash
-   sudo apt update
-   sudo apt install docker-ce
-   ```
-
-6. **Adicione seu usuário ao grupo Docker** (para evitar usar `sudo` em comandos Docker):
-   ```bash
-   sudo usermod -aG docker $USER
-   newgrp docker
-   ```
-
-### 2. Instruções para Windows e macOS
-
-1. **Baixe o Docker Desktop**:
-   - Acesse o [site oficial do Docker Desktop](https://www.docker.com/products/docker-desktop) e baixe a versão apropriada para o seu sistema operacional.
-
-2. **Instale o Docker Desktop**:
-   - Siga as instruções de instalação e permita que o Docker faça as configurações necessárias no sistema.
-
-3. **Reinicie o computador** (se solicitado) após a instalação.
-
-4. **Verifique se o Docker está instalado corretamente**:
-   ```bash
-   docker --version
-   ```
 
 ### 1. Comando para Baixar e Executar o Container MySQL
 
