@@ -28,7 +28,7 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-./target
+target/
 
 ### Java ###
 # Compiled class file
