@@ -1,4 +1,4 @@
-package com.metasconsultoria.CRUDs;
+package com.metasconsultoria.controllers;
 
 import com.metasconsultoria.entities.Project;
 
@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 public class ProjectCRUD {
+
+    private ProjectCRUD() {}
+
     public static void createProject(Connection conn, Project project) {
         String sql = "INSERT INTO Project (name, description, public, fk_city, date) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -34,7 +37,9 @@ public class ProjectCRUD {
 
     public static Project getProjectById(Connection conn, int id) {
         Project project = null;
-        String sql = "SELECT * FROM Project WHERE cod_project = ?";
+        String sql = "SELECT p.cod_project, p.name, p.description, p.public, p.date, p.fk_city " +
+                "FROM Project p " +
+                "WHERE cod_project = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -63,7 +68,8 @@ public class ProjectCRUD {
 
     public static List<Project> getAllProjects(Connection conn) {
         List<Project> projects = new ArrayList<>();
-        String sql = "SELECT * FROM Project";
+        String sql = "SELECT p.cod_project, p.name, p.description, p.public, p.date, p.fk_city " +
+                     "FROM Project p";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -122,8 +128,9 @@ public class ProjectCRUD {
 
     public static List<Project> getProjectsByClient(Connection conn, int idUser) {
         List<Project> projects = new ArrayList<>();
-        String sql = "SELECT p.cod_project, p.name, p.description, p.public, p.date, p.fk_city FROM Project p" +
-                "JOIN R_Collaborator_Client_Project r on r.fk_project = p.cod_project" +
+        String sql = "SELECT p.cod_project, p.name, p.description, p.public, p.date, p.fk_city " +
+                "FROM Project p " +
+                "JOIN R_Collaborator_Client_Project r on r.fk_project = p.cod_project " +
                 "WHERE r.fk_client = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {

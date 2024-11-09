@@ -1,8 +1,8 @@
 package com.metasconsultoria;
 
 import com.metasconsultoria.database.ConnectDatabase;
-import com.metasconsultoria.CRUDs.CityCRUD;
-import com.metasconsultoria.CRUDs.ProjectCRUD;
+import com.metasconsultoria.controllers.CityCRUD;
+import com.metasconsultoria.controllers.ProjectCRUD;
 import com.metasconsultoria.entities.City;
 import com.metasconsultoria.entities.Project;
 

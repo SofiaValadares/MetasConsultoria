@@ -1,4 +1,4 @@
-package com.metasconsultoria.CRUDs;
+package com.metasconsultoria.controllers;
 
 import com.metasconsultoria.entities.City;
 import com.metasconsultoria.entities.Client;
@@ -11,24 +11,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientCRUD {
+    public static final String CLIENT_TABLE = "Client cliente";
+    public static final String COD_USER = "c.cod_user";
+    private static final String NAME = "name";
+    private static final String EMAIL = "u.email";
+    private static final String PASSWORD = "u.password";
+    private static final String FK_CITY = "c.fk_city";
+
+    private ClientCRUD() {}
 
     public static void createClient(Connection conn, Client client) throws SQLException {
-        String sql = "INSERT INTO Client (name, password, email, city_id) VALUES (?, ?, ?, ?)";
+        UserCRUD.createUser(conn, client);
+        String sql = "INSERT INTO Client (cod_user, fk_city) VALUES (?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, client.getName());
-            stmt.setString(2, client.getPassword());
-            stmt.setString(3, client.getEmail());
-            stmt.setInt(4, client.getCity().getIdCity());
+            stmt.setInt(1, client.getIdUser());
+            stmt.setInt(2, client.getIdCity());
             stmt.executeUpdate();
         }
     }
 
     public static Client getClientById(Connection conn, int id) throws SQLException {
         Client client = null;
-        String sql = "SELECT c.cod_user, c.name, c.email, c.password, c.city_id, ci.name AS city_name " +
+        String sql = "SELECT c.cod_user, u.name, u.email, u.password, c.fk_city " +
                 "FROM Client c " +
-                "JOIN City ci ON c.city_id = ci.cod_city " +
+                "JOIN User u on c.cod_user = u.cod_user " +
                 "WHERE c.cod_user = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -36,15 +43,11 @@ public class ClientCRUD {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     client = new Client();
-                    client.setIdUser(rs.getInt("cod_user"));
-                    client.setName(rs.getString("name"));
-                    client.setEmail(rs.getString("email"));
-                    client.setPassword(rs.getString("password"));
-
-                    City city = new City();
-                    city.setIdCity(rs.getInt("city_id"));
-                    city.setName(rs.getString("city_name"));
-                    client.setCity(city);
+                    client.setIdUser(rs.getInt(COD_USER));
+                    client.setName(rs.getString(NAME));
+                    client.setEmail(rs.getString(EMAIL));
+                    client.setPassword(rs.getString(PASSWORD));
+                    client.setIdCity(rs.getInt(FK_CITY));
                 }
             }
         }
@@ -53,24 +56,20 @@ public class ClientCRUD {
 
     public static List<Client> getAllClients(Connection conn) throws SQLException {
         List<Client> clients = new ArrayList<>();
-        String sql = "SELECT c.cod_user, c.name, c.email, c.password, c.city_id, ci.name AS city_name " +
+        String sql = "SELECT c.cod_user, u.name, u.email, u.password, c.fk_city " +
                 "FROM Client c " +
-                "JOIN City ci ON c.city_id = ci.cod_city";
+                "JOIN User u on c.cod_user = u.cod_user ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Client client = new Client();
-                client.setIdUser(rs.getInt("cod_user"));
-                client.setName(rs.getString("name"));
-                client.setEmail(rs.getString("email"));
-                client.setPassword(rs.getString("password"));
-
-                City city = new City();
-                city.setIdCity(rs.getInt("city_id"));
-                city.setName(rs.getString("city_name"));
-                client.setCity(city);
+                client.setIdUser(rs.getInt(COD_USER));
+                client.setName(rs.getString(NAME));
+                client.setEmail(rs.getString(EMAIL));
+                client.setPassword(rs.getString(PASSWORD));
+                client.setIdCity(rs.getInt(FK_CITY));
 
                 clients.add(client);
             }
@@ -80,14 +79,11 @@ public class ClientCRUD {
 
 
     public static void updateClient(Connection conn, Client client) throws SQLException {
-        String sql = "UPDATE Client SET name = ?, password = ?, email = ?, city_id = ? WHERE cod_user = ?";
+        String sql = "UPDATE Client SET fk_city = ? WHERE cod_user = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, client.getName());
-            stmt.setString(2, client.getPassword());
-            stmt.setString(3, client.getEmail());
-            stmt.setInt(4, client.getCity().getIdCity());
-            stmt.setInt(5, client.getIdUser());
+            stmt.setInt(1, client.getIdCity());
+            stmt.setInt(2, client.getIdUser());
             stmt.executeUpdate();
         }
     }
@@ -99,5 +95,7 @@ public class ClientCRUD {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
+
+        UserCRUD.deleteUser(conn, id);
     }
 }
