@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CollaboratorCRUD {
@@ -26,8 +27,8 @@ public class CollaboratorCRUD {
 
     public static void createCollaborator(Connection conn, Collaborator collaborator) {
         UserCRUD.createUser(conn, collaborator);
-        String sql = "INSERT INTO Collaborator (cod_user, city, neighborhood, street, house_number, complement, phone1, phone2) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
+        String sql = SQLString.insertInto(Collaborator.TABLE,
+                                          Arrays.asList(Collaborator.COD_COLLABORATOR, Collaborator.CITY, Collaborator.NEIGHBORHOOD, Collaborator.STREET, Collaborator.NUMBER,Collaborator.COMPLEMENT, Collaborator.PHONE1, Collaborator.PHONE2));
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, collaborator.getIdUser());
             stmt.setString(2, collaborator.getCity());

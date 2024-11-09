@@ -1,10 +1,17 @@
 package com.metasconsultoria.entities;
 
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Collaborator extends User {
+    public static final String TABLE = "Collaborator";
+    public static final String COD_COLLABORATOR = "cod_collaborator";
+    public static final String CITY = "city";
+    public static final String NEIGHBORHOOD = "neighborhoob";
+    public static final String  STREET = "street";
+    public static final String NUMBER = "house_number";
+    public static final String COMPLEMENT = "complement";
+    public static final String PHONE1 = "phone1";
+    public static final String PHONE2 = "phone2";
+
     private String city;
     private String neighborhood;
     private String street;
