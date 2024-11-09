@@ -90,7 +90,8 @@ public class ClientCRUD {
     }
 
     public static void deleteClient(Connection conn, int id) throws SQLException {
-        String sql = "DELETE FROM Client WHERE cod_user = ?";
+        String sql = SQLString.deleteFrom(Client.TABLE,
+                                          Arrays.asList(Client.COD_CLIENTE + " = ?"));
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);

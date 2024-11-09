@@ -35,4 +35,20 @@ public class SQLString {
 
         return builder.toString();
     }
+
+
+    public static String deleteFrom(String tableName, List<String> where){
+        StringBuilder builder = new StringBuilder();
+        builder.append("DELETE FROM ").append(tableName).append(" ");
+
+        for (int i = 0; i < where.size(); i++) {
+            builder.append("WHERE ").append(where.get(i));
+
+            if (i < where.size() - 1) {
+                builder.append(" and ");
+            }
+        }
+
+        return builder.toString();
+    }
 }

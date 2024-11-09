@@ -126,7 +126,9 @@ public class CityCRUD {
     }
 
     public static void deleteCity(Connection conn, int id) {
-        String sql = "DELETE FROM City WHERE cod_city = ?";
+        String sql = SQLString.deleteFrom(City.TABLE,
+                                          Arrays.asList(City.COD_CITY + " = ?"));
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();

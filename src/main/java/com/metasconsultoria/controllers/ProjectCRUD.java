@@ -182,7 +182,8 @@ public class ProjectCRUD {
 
 
     public static void deleteProject(Connection conn, int id) {
-        String sql = "DELETE FROM Project WHERE cod_project = ?";
+        String sql = SQLString.deleteFrom(Project.TABLE,
+                                          Arrays.asList(Project.COD_PROJECT + " = ?"));
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();

@@ -124,7 +124,8 @@ public class CollaboratorCRUD {
     }
 
     public static void deleteCollaborator(Connection conn, int id) {
-        String sql = "DELETE FROM Collaborator WHERE cod_user = ?";
+        String sql = SQLString.deleteFrom(Collaborator.TABLE,
+                                          Arrays.asList(Collaborator.COD_COLLABORATOR + " = ?"));
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);

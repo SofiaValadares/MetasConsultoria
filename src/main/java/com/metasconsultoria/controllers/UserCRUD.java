@@ -93,7 +93,8 @@ public class UserCRUD {
     }
 
     public static void deleteUser(Connection conn, int id) {
-        String sql = "DELETE FROM User WHERE cod_user = ?";
+        String sql = SQLString.deleteFrom(User.TABLE,
+                                          Arrays.asList(User.COD_USER + " = ?"));
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
