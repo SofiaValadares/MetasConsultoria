@@ -8,105 +8,78 @@ Nossa equipe desenvolveu um sistema de acompanhamento de projetos para a Metas C
 
 Para testar o repositório localmente, siga as instruções detalhadas no arquivo README.
 
-## Feramentas Ultilizadas
-IDEs: VS Code, IntelliJ IDEA, DBearver, Data Grip, WebStorm.
-Linguagen: Java, MySQL, Javascript, HTML e CSS
-Framework: React
-Conexão com Banco de Dados: JBDC
-Mais Ferramentas: Docker
+## FERRAMENTAS UTILIZADAS
+- **IDEs**: VS Code, IntelliJ IDEA, DBeaver, DataGrip, WebStorm
+- **Linguagens**: Java, MySQL, JavaScript, HTML, CSS
+- **Frameworks**: React
+- **Conexão com Banco de Dados**: JDBC
+- **Outras Ferramentas**: Docker
 
-## Pré-requisitos
-1. Ter o [Java](https://www.oracle.com/br/java/) instalado em sua máquina.
-2. Ter o [Docker](https://docs.docker.com/desktop/install/windows-install/) instalado em sua máquina.
+## PRÉ-REQUISITOS
+1. Instalar o [Java](https://www.oracle.com/br/java/).
+2. Instalar o [Docker](https://docs.docker.com/desktop/install/windows-install/).
 
-Para instalar qualquer um dos pré-requisitos, basta clicar no nome destacado em azul para ser redirecionado à documentação oficial da ferramenta.
+Clique nos links acima para acessar a documentação oficial e seguir as instruções de instalação.
 
-# INSTALANDO REPOSITÓRIO NA MÁQUINA
+# INSTALANDO O REPOSITÓRIO LOCALMENTE
 
-Abra seu terminal e execute o seguinte comando para clonar o repositório na sua máquina:
+Abra o terminal e execute o comando para clonar o repositório:
 
 ```bash
 git clone https://github.com/SofiaValadares/MetasConsultoria
 ```
 
-Com os arquivos clonados, navegue até a pasta do projeto:
+Depois de clonar, navegue até a pasta do projeto:
 
 ```bash
-cd ./MetasConsultoria
+cd MetasConsultoria
 ```
 
-Certifique-se de que todas as dependências do projeto estão instaladas. Após isso, o projeto estará pronto para execução.
+Certifique-se de instalar todas as dependências necessárias antes de prosseguir.
 
-# EXECULTANDO PROJETO LOCALMENTE
-### 1. Comando para Baixar e Executar o Container MySQL
+# EXECUTANDO O PROJETO LOCALMENTE
+### 1. Configuração do Banco de Dados
+Certifique-se de ter o Docker aberto com permissão de administrador e aguarde a Docker Engine iniciar.
 
-Após a instalação do Docker, siga estas etapas para criar e rodar um container MySQL que será usado pelo projeto. Use o comando abaixo:
+Para criar a imagem do banco de dados, execute:
 
 ```bash
 docker run -d --name mysql_metas_container -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 mysql:8.0
 ```
 
-**Explicação do comando**:
-- `-d`: Executa o container em segundo plano, permitindo que você continue usando o terminal para outros comandos.
-- `--name mysql_metas_container`: Define um nome específico para o container, facilitando a identificação e o gerenciamento.
-- `-e MYSQL_ROOT_PASSWORD=my-secret-pw`: Define a senha do usuário `root` do MySQL. Esta senha é necessária para acesso administrativo ao banco de dados e **não deve ser alterada** para garantir a compatibilidade com o código existente do projeto.
-- `-p 3306:3306`: Mapeia a porta 3306 do container (onde o MySQL está ouvindo) para a porta 3306 do host (sua máquina local). **Certifique-se de que a porta 3306 esteja livre** para evitar conflitos.
-- `mysql:8.0`: Especifica a imagem do MySQL que será usada. A versão `8.0` é compatível com o projeto e deve ser mantida.
-
-**Importante**:
-- As variáveis como a senha `my-secret-pw` e a porta `3306` não devem ser modificadas, pois são necessárias para que a aplicação se conecte corretamente ao banco de dados sem ajustes adicionais no código.
-
-**Dica**: Se o container já existir com outro nome ou configuração, remova-o antes de executar o comando acima para evitar conflitos.
-
-
-### 2. Aguarde a Inicialização
-
-É recomendável esperar cerca de 20 segundos para garantir que o MySQL tenha iniciado completamente.
-
-### 3. Verifique o Status do Container
-
-Para confirmar que o container está em execução, use o comando:
+Verifique o status da imagem com:
 
 ```bash
 docker ps
 ```
 
-Este comando exibirá uma lista dos containers em execução. Verifique se `mysql_metas_container` está listado e com o status `Up`.
-
-## Parando e Removendo o Container
-
-### Parar o Container
-
-Se você quiser parar o container MySQL, use o seguinte comando:
+Para parar o container, use:
 
 ```bash
 docker stop mysql_metas_container
 ```
 
-### Remover o Container
+Para reiniciá-lo, execute:
 
-Para remover o container depois de pará-lo:
+```bash
+docker start mysql_metas_container
+```
+
+E para remover o container:
 
 ```bash
 docker rm mysql_metas_container
 ```
 
-## Verificação de Logs e Problemas
-
-Se você encontrar problemas ou quiser ver o que está acontecendo no container, use:
+### 2. Executando o Back-End
+Compile o projeto com:
 
 ```bash
-docker logs mysql_metas_container
+mvn clean package
 ```
 
-Este comando mostrará os logs do MySQL, o que pode ajudar a diagnosticar problemas.
+Em seguida, inicie o projeto:
 
-## Notas Finais
-
-- Certifique-se de que a porta `3306` não esteja em uso por outro serviço para evitar conflitos de conexão.
-- Se você precisar rodar comandos SQL diretamente, pode acessar o MySQL com:
-  ```bash
-  docker exec -it mysql_metas_container mysql -u root -pmy-secret-pw
-  ```
-
-Com essas instruções, você estará pronto para configurar e gerenciar um container MySQL em seu ambiente de desenvolvimento.
+```bash
+mvn exec:java
+```
