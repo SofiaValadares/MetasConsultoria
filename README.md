@@ -24,13 +24,13 @@ Para instalar qualquer um dos pré-requisitos, basta clicar no nome destacado em
 Abra seu terminal e execulte o seguinte comando para clonar o repositorio na sua maquina
 
      ```bash
-     git clone <URL_DO_REPOSITORIO>
+     git clone https://github.com/SofiaValadares/MetasConsultoria
      ```
 
 Com os arquivos na sua maquina navegue ate a pasta do projeto
 
      ```bash
-     cd <NOME_DA_PASTA_DO_PROJETO>
+     cd ./MetasConsultoria
      ```
 
 
