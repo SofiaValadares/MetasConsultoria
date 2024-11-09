@@ -1,17 +1,17 @@
 package com.metasconsultoria.controllers;
 
-import com.metasconsultoria.entities.City;
 import com.metasconsultoria.entities.Client;
+import com.metasconsultoria.entities.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClientCRUD {
-    public static final String CLIENT_TABLE = "Client cliente";
     public static final String COD_USER = "c.cod_user";
     private static final String NAME = "name";
     private static final String EMAIL = "u.email";
@@ -22,7 +22,8 @@ public class ClientCRUD {
 
     public static void createClient(Connection conn, Client client) throws SQLException {
         UserCRUD.createUser(conn, client);
-        String sql = "INSERT INTO Client (cod_user, fk_city) VALUES (?, ?)";
+        String sql = SQLString.insertInto(Client.TABLE,
+                                          Arrays.asList(Client.COD_CLIENTE, Client.FK_CITY));
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, client.getIdUser());

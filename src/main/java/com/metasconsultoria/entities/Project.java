@@ -1,15 +1,16 @@
 package com.metasconsultoria.entities;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 
 public class Project {
+    public static final String TABLE = "Project";
+    public static final String COD_PROJECT = "cod_project";
+    public static final String NAME = "name";
+    public static final String DESCRIPTION = "description";
+    public static final String PUBLIC = "public";
+    public static final String DATE = "date";
+    public static final String FK_CITY = "fk_city";
+
     private int idProject;
     private String name;
     private String description;

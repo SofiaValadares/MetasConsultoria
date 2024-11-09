@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UserCRUD {
-    private static final String USER_TABLE = "User";
     private static final String COD_USER = "cod_user";
     private static final String NAME = "name";
     private static final String EMAIL = "email";
@@ -20,7 +19,8 @@ public class UserCRUD {
     private UserCRUD() {}
 
     public static void createUser(Connection conn, User user) {
-        String sql = "INSERT INTO User (name, email, password) VALUES (?, ?, ?)";
+        String sql = SQLString.insertInto(User.TABLE,
+                                          Arrays.asList(NAME, EMAIL, PASSWORD));
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getName());

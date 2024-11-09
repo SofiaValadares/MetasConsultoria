@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -15,17 +16,14 @@ public class ProjectCRUD {
     private ProjectCRUD() {}
 
     public static void createProject(Connection conn, Project project) {
-        String sql = "INSERT INTO Project (name, description, public, fk_city, date) VALUES (?, ?, ?, ?, ?)";
+        String sql = SQLString.insertInto(Project.TABLE,
+                                          Arrays.asList(Project.NAME, Project.DESCRIPTION, Project.FK_CITY));
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, project.getName());
             stmt.setString(2, project.getDescription());
-            stmt.setBoolean(3, project.isPublicProject());
-            stmt.setInt(4, project.getIdCity());
-            if (project.getDate() != null) {
-                stmt.setDate(5, new java.sql.Date(project.getDate().getTime()));
-            } else {
-                stmt.setDate(5, null);
-            }
+            stmt.setInt(3, project.getIdCity());
+
             stmt.executeUpdate();
             System.out.println("Projeto criado com sucesso.");
         } catch (SQLException e) {

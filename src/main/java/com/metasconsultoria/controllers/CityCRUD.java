@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CityCRUD {
@@ -19,7 +20,9 @@ public class CityCRUD {
     }
 
     public static void createCity(Connection conn, City city) {
-        String sql = "INSERT INTO City (name, state) VALUES (?, ?)";
+        String sql = SQLString.insertInto(City.TABLE,
+                                          Arrays.asList(City.NAME, City.STATE));
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, city.getName());
             stmt.setString(2, city.getState());

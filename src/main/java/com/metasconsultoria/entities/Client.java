@@ -3,6 +3,10 @@ package com.metasconsultoria.entities;
 import java.sql.Connection;
 
 public class Client extends User {
+    public static final String TABLE = "Client";
+    public static final String COD_CLIENTE = "cod_user";
+    public static final String FK_CITY = "fk_city";
+
     private int idCity;
 
     public Client() {
