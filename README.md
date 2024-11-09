@@ -13,6 +13,7 @@ IDEs: VS Code, IntelliJ IDEA, DBearver, Data Grip, WebStorm.
 Linguagen: Java, MySQL, Javascript, HTML e CSS
 Framework: React
 Conexão com Banco de Dados: JBDC
+Mais Ferramentas: Docker
 
 ## Pré-requisitos
 1. Ter o [Java](https://www.oracle.com/br/java/) instalado em sua máquina.
@@ -20,20 +21,23 @@ Conexão com Banco de Dados: JBDC
 
 Para instalar qualquer um dos pré-requisitos, basta clicar no nome destacado em azul para ser redirecionado à documentação oficial da ferramenta.
 
-# INSTALANDO REPOSITORIO NA MAQUINA
-Abra seu terminal e execulte o seguinte comando para clonar o repositorio na sua maquina
+# INSTALANDO REPOSITÓRIO NA MÁQUINA
 
-     ```bash
-     git clone https://github.com/SofiaValadares/MetasConsultoria
-     ```
+Abra seu terminal e execute o seguinte comando para clonar o repositório na sua máquina:
 
-Com os arquivos na sua maquina navegue ate a pasta do projeto
+```bash
+git clone https://github.com/SofiaValadares/MetasConsultoria
+```
 
-     ```bash
-     cd ./MetasConsultoria
-     ```
+Com os arquivos clonados, navegue até a pasta do projeto:
 
+```bash
+cd ./MetasConsultoria
+```
 
+Certifique-se de que todas as dependências do projeto estão instaladas. Após isso, o projeto estará pronto para execução.
+
+# EXECULTANDO PROJETO LOCALMENTE
 ### 1. Comando para Baixar e Executar o Container MySQL
 
 Após a instalação do Docker, siga estas etapas para criar e rodar um container MySQL que será usado pelo projeto. Use o comando abaixo:
