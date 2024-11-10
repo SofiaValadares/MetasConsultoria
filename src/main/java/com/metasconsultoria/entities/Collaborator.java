@@ -1,30 +1,43 @@
 package com.metasconsultoria.entities;
 
+import com.metasconsultoria.annotation.*;
 
-public class Collaborator extends User {
-    public static final String TABLE = "Collaborator";
-    public static final String COD_COLLABORATOR = "cod_collaborator";
-    public static final String CITY = "city";
-    public static final String NEIGHBORHOOD = "neighborhoob";
-    public static final String  STREET = "street";
-    public static final String NUMBER = "house_number";
-    public static final String COMPLEMENT = "complement";
-    public static final String PHONE1 = "phone1";
-    public static final String PHONE2 = "phone2";
+@Table(name = "Collaborator")
+public class Collaborator  {
+    @PrimaryKey
+    @Column(name = "cod_user")
+    @ForeignKey(table = "User", column = "cod_user")
+    private int idUser;
 
+    @Column(name = "city")
     private String city;
+
+    @Column(name = "neighborhood")
     private String neighborhood;
+
+    @Column(name = "street")
     private String street;
+
+    @Column(name = "house_number")
     private int number;
+
+    @Column(name = "complement")
     private String complement;
+
+    @Column(name = "phone1")
     private String phoneNumber1;
+
+    @Column(name = "phone2")
     private String phoneNumber2;
+
+    @Column(name = "supervised_by")
+    private int supervisedBy;
 
     public Collaborator() {
     }
 
-    public Collaborator(String name, String password, String email, String city, String neighborhood, String street, int number, String complement, String phoneNumber1, String phoneNumber2) {
-        super(name, password, email);
+    public Collaborator(int idUser, String city, String neighborhood, String street, int number, String complement, String phoneNumber1, String phoneNumber2) {
+        this.idUser = idUser;
         this.city = city;
         this.neighborhood = neighborhood;
         this.street = street;
@@ -32,6 +45,14 @@ public class Collaborator extends User {
         this.complement = complement;
         this.phoneNumber1 = phoneNumber1;
         this.phoneNumber2 = phoneNumber2;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getCity() {
