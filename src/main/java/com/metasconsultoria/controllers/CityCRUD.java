@@ -1,4 +1,4 @@
-package com.metasconsultoria.CRUDs;
+package com.metasconsultoria.controllers;
 
 import com.metasconsultoria.entities.City;
 
@@ -7,17 +7,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CityCRUD {
+    private static final String COD_CITY = "cod_city";
+    private static final String NAME = "name";
+    private static final String STATE = "state";
+
+
+    private CityCRUD() {
+    }
 
     public static void createCity(Connection conn, City city) {
-        String sql = "INSERT INTO City (name, state) VALUES (?, ?)";
+        String sql = SQLString.insertInto(City.TABLE,
+                                          Arrays.asList(City.NAME, City.STATE));
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, city.getName());
             stmt.setString(2, city.getState());
             stmt.executeUpdate();
-            System.out.println("Cidade criada com sucesso.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -25,15 +34,15 @@ public class CityCRUD {
 
     public static City getCityById(Connection conn, int id) {
         City city = null;
-        String sql = "SELECT * FROM City WHERE cod_city = ?";
+        String sql = "SELECT cod_city, name, state FROM City WHERE cod_city = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     city = new City();
-                    city.setIdCity(rs.getInt("cod_city"));
-                    city.setName(rs.getString("name"));
-                    city.setState(rs.getString("state"));
+                    city.setIdCity(rs.getInt(COD_CITY));
+                    city.setName(rs.getString(NAME));
+                    city.setState(rs.getString(STATE));
                 }
             }
         } catch (SQLException e) {
@@ -44,15 +53,15 @@ public class CityCRUD {
 
     public static List<City> getCitiesByState(Connection conn, String state) {
         List<City> cities = new ArrayList<>();
-        String sql = "SELECT * FROM City WHERE state = ?";
+        String sql = "SELECT cod_city, name, state FROM City WHERE state = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, state);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     City city = new City();
-                    city.setIdCity(rs.getInt("cod_city"));
-                    city.setName(rs.getString("name"));
-                    city.setState(rs.getString("state"));
+                    city.setIdCity(rs.getInt(COD_CITY));
+                    city.setName(rs.getString(NAME));
+                    city.setState(rs.getString(STATE));
                     cities.add(city);
                 }
             }
@@ -64,15 +73,15 @@ public class CityCRUD {
 
     public static List<City> getAllCities(Connection conn) {
         List<City> cities = new ArrayList<>();
-        String sql = "SELECT * FROM City";
+        String sql = "SELECT cod_city, name, state FROM City";
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 City city = new City();
-                city.setIdCity(rs.getInt("cod_city"));
-                city.setName(rs.getString("name"));
-                city.setState(rs.getString("state"));
+                city.setIdCity(rs.getInt(COD_CITY));
+                city.setName(rs.getString(NAME));
+                city.setState(rs.getString(STATE));
                 cities.add(city);
             }
         } catch (SQLException e) {
@@ -93,9 +102,9 @@ public class CityCRUD {
 
             while (rs.next()) {
                 City city = new City();
-                city.setIdCity(rs.getInt("cod_city"));
-                city.setName(rs.getString("name"));
-                city.setState(rs.getString("state"));
+                city.setIdCity(rs.getInt(COD_CITY));
+                city.setName(rs.getString(NAME));
+                city.setState(rs.getString(STATE));
                 cities.add(city);
             }
         } catch (SQLException e) {
@@ -111,18 +120,18 @@ public class CityCRUD {
             stmt.setString(2, city.getState());
             stmt.setInt(3, city.getIdCity());
             stmt.executeUpdate();
-            System.out.println("Cidade atualizada com sucesso.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static void deleteCity(Connection conn, int id) {
-        String sql = "DELETE FROM City WHERE cod_city = ?";
+        String sql = SQLString.deleteFrom(City.TABLE,
+                                          Arrays.asList(City.COD_CITY + " = ?"));
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
-            System.out.println("Cidade deletada com sucesso.");
         } catch (SQLException e) {
             e.printStackTrace();
         }

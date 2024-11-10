@@ -3,21 +3,25 @@ package com.metasconsultoria.entities;
 import java.sql.Connection;
 
 public class Client extends User {
-    private City city;
+    public static final String TABLE = "Client";
+    public static final String COD_CLIENTE = "cod_user";
+    public static final String FK_CITY = "fk_city";
+
+    private int idCity;
 
     public Client() {
     }
 
-    public Client(String name, String password, String email, City city) {
+    public Client(String name, String password, String email, int idCity) {
         super(name, password, email);
-        this.city = city;
+        this.idCity = idCity;
     }
 
-    public City getCity() {
-        return city;
+    public int getIdCity() {
+        return idCity;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public void setIdCity(int idCity) {
+        this.idCity = idCity;
     }
 }

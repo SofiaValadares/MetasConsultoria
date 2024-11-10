@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class City {
+    public static final String TABLE = "City";
+    public static final String COD_CITY = "cod_city";
+    public static final String NAME = "name";
+    public static final String STATE = "state";
+
     private int idCity;
     private String name;
     private String state;
