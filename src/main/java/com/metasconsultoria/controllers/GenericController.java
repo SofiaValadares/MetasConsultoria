@@ -11,7 +11,7 @@ import java.util.List;
 
 public class GenericController {
 
-    private GenericController(){
+    private GenericController() {
 
     }
 
@@ -52,51 +52,51 @@ public class GenericController {
     }
 
     public static void deleteByPk(Connection conn, Class<?> clazz, Object delete) {
-       try {
-           String tableName = (clazz.getAnnotation(Table.class)).name();
+        try {
+            String tableName = (clazz.getAnnotation(Table.class)).name();
 
-           List<String> primaryKeyName = new ArrayList<>();
-           List<Object> primaryKeyValue = new ArrayList<>();
+            List<String> primaryKeyName = new ArrayList<>();
+            List<Object> primaryKeyValue = new ArrayList<>();
 
 
-           for (Field field : clazz.getDeclaredFields()) {
-               field.setAccessible(true);
-               if (field.isAnnotationPresent(PrimaryKey.class)) {
-                   Column column = field.getAnnotation(Column.class);
-                   primaryKeyName.add(column.name());
-                   field.setAccessible(true);
-                   primaryKeyValue.add(field.get(delete));
-                   break;
-               }
-           }
+            for (Field field : clazz.getDeclaredFields()) {
+                field.setAccessible(true);
+                if (field.isAnnotationPresent(PrimaryKey.class)) {
+                    Column column = field.getAnnotation(Column.class);
+                    primaryKeyName.add(column.name());
+                    field.setAccessible(true);
+                    primaryKeyValue.add(field.get(delete));
+                    break;
+                }
+            }
 
-           StringBuilder sqlBuilder = new StringBuilder("DELETE FROM " + tableName + " WHERE ");
+            StringBuilder sqlBuilder = new StringBuilder("DELETE FROM " + tableName + " WHERE ");
 
-           for (int i = 0; i < primaryKeyName.size(); i++) {
-               sqlBuilder.append(primaryKeyName.get(i)).append("=?");
+            for (int i = 0; i < primaryKeyName.size(); i++) {
+                sqlBuilder.append(primaryKeyName.get(i)).append("=?");
 
-               if (i != primaryKeyName.size() - 1) {
-                   sqlBuilder.append(" AND ");
-               }
-           }😍
+                if (i != primaryKeyName.size() - 1) {
+                    sqlBuilder.append(" AND ");
+                }
+            }
 
-           String sql = sqlBuilder.toString();
+            String sql = sqlBuilder.toString();
 
-           try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-               for (int i = 0; i < primaryKeyValue.size(); i++) {
-                   stmt.setObject(i + 1, primaryKeyValue.get(i));
-               }
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                for (int i = 0; i < primaryKeyValue.size(); i++) {
+                    stmt.setObject(i + 1, primaryKeyValue.get(i));
+                }
 
-               stmt.executeUpdate();
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-       } catch (SecurityException e) {
-           throw new RuntimeException(e);
-       } catch (IllegalAccessException e) {
-           throw new RuntimeException(e);
-       }
+        } catch (SecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -166,3 +166,5 @@ public class GenericController {
         }
 
         return select;
+    }
+}
