@@ -1,21 +1,29 @@
 package com.metasconsultoria.entities;
 
+import com.metasconsultoria.annotation.*;
+
 import java.util.Date;
 
+@Table(name = "Project")
 public class Project {
-    public static final String TABLE = "Project";
-    public static final String COD_PROJECT = "cod_project";
-    public static final String NAME = "name";
-    public static final String DESCRIPTION = "description";
-    public static final String PUBLIC = "public";
-    public static final String DATE = "date";
-    public static final String FK_CITY = "fk_city";
-
+    @PrimaryKey
+    @Column(name = "cod_project")
     private int idProject;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "public")
     private boolean publicProject;
+
+    @Column(name = "date")
     private Date date;
+
+    @Column(name = "fk_city")
+    @ForeignKey(table = "City", column = "cod_city")
     private int idCity;
 
     public Project() {}

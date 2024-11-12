@@ -1,20 +1,21 @@
 package com.metasconsultoria.entities;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.metasconsultoria.annotation.*;
 
+
+@Table(name = "User")
 public class User {
-    public static final String TABLE = "User";
-    public static final String COD_USER = "cod_user";
-    public static final String NAME = "name";
-    public static final String EMAIL = "email";
-    public static final String PASSWORD = "password";
-
+    @PrimaryKey
+    @Column(name = "cod_user")
     private int idUser;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "email")
     private String email;
 
 
