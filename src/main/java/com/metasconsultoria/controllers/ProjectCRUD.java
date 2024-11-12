@@ -193,4 +193,67 @@ public class ProjectCRUD {
         }
     }
 
+    public static List<Project> getNextReservations(Connection conn) {
+        List<Project> projects = new ArrayList<>();
+        String sql = "SELECT p.cod_project, p.name, p.description, p.public, p.date, p.fk_city " +
+                     "FROM Project p " +
+                     "WHERE p.date > CURRENT_DATE " + // Filtra projetos
+                     "ORDER BY p.date ASC";           // Ordena os projetos por data de proximidade
+    
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+    
+            while (rs.next()) {
+                Project project = new Project();
+                project.setIdProject(rs.getInt("cod_project"));
+                project.setName(rs.getString("name"));
+                project.setDescription(rs.getString("description"));
+                project.setPublicProject(rs.getBoolean("public"));
+                project.setIdCity(rs.getInt("fk_city"));
+    
+                java.sql.Date sqlDate = rs.getDate("date");
+                if (sqlDate != null) {
+                    project.setDate(new Date(sqlDate.getTime()));
+                }
+    
+                projects.add(project);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return projects;
+    }
+
+    public static Project getLastProjectReportById(Connection conn, int projectId) {
+        Project lastProject = null;
+        String sql = "SELECT p.cod_project, p.name, p.description, p.public, p.date, p.fk_city " +
+                     "FROM Project p " +
+                     "WHERE p.cod_project = ? AND p.date <= CURRENT_DATE " + 
+    
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, projectId); // Busca pelo ID do projeto(OLha melhor essa parte)
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    lastProject = new Project();
+                    lastProject.setIdProject(rs.getInt("cod_project"));
+                    lastProject.setName(rs.getString("name"));
+                    lastProject.setDescription(rs.getString("description"));
+                    lastProject.setPublicProject(rs.getBoolean("public"));
+                    lastProject.setIdCity(rs.getInt("fk_city"));
+    
+                    java.sql.Date sqlDate = rs.getDate("date");
+                    if (sqlDate != null) {
+                        lastProject.setDate(new Date(sqlDate.getTime()));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return lastProject;
+    }
+    
+
 }
