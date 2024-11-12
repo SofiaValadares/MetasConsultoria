@@ -78,7 +78,7 @@ public class GenericController {
                if (i != primaryKeyName.size() - 1) {
                    sqlBuilder.append(" AND ");
                }
-           }
+           }😍
 
            String sql = sqlBuilder.toString();
 
@@ -153,4 +153,16 @@ public class GenericController {
         }
     }
 
-}
+    public static Object selectAll(Connection conn, Class<?> clazz) {
+        List<Object> select = new ArrayList<>();
+
+        try {
+            String tableName = (clazz.getAnnotation(Table.class)).name();
+
+            String sql = "SELECT * FROM " + tableName;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return select;
