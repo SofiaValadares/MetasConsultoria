@@ -191,7 +191,11 @@ public class GenericController {
         Object select = null;
 
         try {
-            String tableName = (clazz.getAnnotation(Table.class)).name();
+            Table tableAnnotation = clazz.getAnnotation(Table.class);
+            if (tableAnnotation == null) {
+                throw new RuntimeException("A classe " + clazz.getName() + " não possui a anotação @Table.");
+            }
+            String tableName = tableAnnotation.name();
 
             List<String> columnNames = new ArrayList<>();
             String primaryKeyName = null;
@@ -200,32 +204,41 @@ public class GenericController {
                 field.setAccessible(true);
 
                 Column column = field.getAnnotation(Column.class);
-                columnNames.add(column.name());
+                if (column != null) {
+                    columnNames.add(column.name());
 
-                if (field.isAnnotationPresent(PrimaryKey.class)) {
-                    if (primaryKeyName == null) {
-                        primaryKeyName = column.name();
-                    } else {
-                        throw new RuntimeException("Primary key already exists");
+                    if (field.isAnnotationPresent(PrimaryKey.class)) {
+                        if (primaryKeyName == null) {
+                            primaryKeyName = column.name();
+                        } else {
+                            throw new RuntimeException("Mais de uma chave primária encontrada na classe " + clazz.getName());
+                        }
                     }
                 }
             }
 
-            String sql = "SELECT * FROM " + tableName + " WHERE " + primaryKeyName + "=?";
+            if (primaryKeyName == null) {
+                throw new RuntimeException("Nenhuma chave primária definida na classe " + clazz.getName());
+            }
 
+            String sql = "SELECT * FROM " + tableName + " WHERE " + primaryKeyName + "=?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setObject(1, id);
 
             ResultSet resultSet = statement.executeQuery();
 
-            for (Field field : clazz.getDeclaredFields()) {
-                field.setAccessible(true);
+            if (resultSet.next()) {
+                select = clazz.getDeclaredConstructor().newInstance();
 
-                Column columnAnnotation = field.getAnnotation(Column.class);
-                if (columnAnnotation != null) {
-                    String columnName = columnAnnotation.name();
+                for (Field field : clazz.getDeclaredFields()) {
+                    field.setAccessible(true);
 
-                    field.set(select, resultSet.getObject(columnName));
+                    Column columnAnnotation = field.getAnnotation(Column.class);
+                    if (columnAnnotation != null) {
+                        String columnName = columnAnnotation.name();
+                        Object value = resultSet.getObject(columnName);
+                        field.set(select, value);
+                    }
                 }
             }
 
@@ -235,5 +248,4 @@ public class GenericController {
 
         return select;
     }
-
 }
