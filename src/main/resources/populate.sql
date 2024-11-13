@@ -81,10 +81,10 @@ CREATE TABLE R_Collaborator_Client_Project (
 CREATE TABLE Next_Steps (
     next_steps_pk           INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
     next_steps              VARCHAR(255) NOT NULL,
-    fk_project_cod_project  INTEGER NOT NULL,
+    fk_project INTEGER NOT NULL,
 
     CONSTRAINT next_steps_fk_project
-        FOREIGN KEY (fk_project_cod_project) REFERENCES Project(cod_project)
+        FOREIGN KEY (fk_project) REFERENCES Project(cod_project)
 );
 
 --criação da tabela  reserva 
@@ -115,21 +115,21 @@ CREATE TABLE Report (
 );
 
 
-CREATE TABLE Collaborator_Project_Report (
-    fk_collaborator_user_id    INTEGER NOT NULL,
-    fk_project_id              INTEGER NOT NULL,
-    fk_report_id               INTEGER NOT NULL,
+CREATE TABLE RCollaborator_Project_Report (
+    fk_collaborator_user    INTEGER NOT NULL,
+    fk_project              INTEGER NOT NULL,
+    fk_report         INTEGER NOT NULL,
 
-    PRIMARY KEY (fk_collaborator_user_id, fk_project_id, fk_report_id),
+    PRIMARY KEY (fk_collaborator_user, fk_project, fk_report),
 
     CONSTRAINT fk_cpr_collaborator
-        FOREIGN KEY (fk_collaborator_user_id) REFERENCES Collaborator(cod_user),
+        FOREIGN KEY (fk_collaborator_user) REFERENCES Collaborator(cod_user),
     
     CONSTRAINT fk_cpr_project
-        FOREIGN KEY (fk_project_id) REFERENCES Project(cod_project),
+        FOREIGN KEY (fk_project) REFERENCES Project(cod_project),
     
     CONSTRAINT fk_cpr_report
-        FOREIGN KEY (fk_report_id) REFERENCES Report(cod_report)
+        FOREIGN KEY (fk_report) REFERENCES Report(cod_report)
 );
 
 
