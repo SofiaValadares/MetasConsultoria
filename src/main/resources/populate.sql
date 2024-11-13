@@ -77,7 +77,6 @@ CREATE TABLE R_Collaborator_Client_Project (
                                                     FOREIGN KEY (fk_project) REFERENCES Project(cod_project)
 );
 
--- criação da tabela proiximos passos
 CREATE TABLE Next_Steps (
     next_steps_pk           INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
     next_steps              VARCHAR(255) NOT NULL,
@@ -87,7 +86,6 @@ CREATE TABLE Next_Steps (
         FOREIGN KEY (fk_project) REFERENCES Project(cod_project)
 );
 
---criação da tabela  reserva 
 CREATE TABLE Reservation (
     reservation_id             INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
     start_time                 TIME NOT NULL,
@@ -107,7 +105,6 @@ CREATE TABLE Reservation (
         FOREIGN KEY (fk_client_cod_user) REFERENCES Client(cod_user)
 );
 
---Criação da tabela relatório:
 CREATE TABLE Report (
     cod_report      INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
     report_date     DATE NOT NULL,
@@ -229,7 +226,6 @@ INSERT INTO Project (name, description, public, fk_city) VALUES
 ('Campanha de Prevenção a Doenças', 'Distribuição de materiais educativos sobre higiene e saúde.', 1, 4),
 ('Projeto de Sustentabilidade Energética', 'Uso de fontes de energia renovável em espaços públicos.', 1, 5);
 
--- Inserindo registros na tabela de relacionamento R_Collaborator_Client_Project
 INSERT INTO R_Collaborator_Client_Project (fk_collaborator, fk_client, fk_project) VALUES
                                                                                        (1, 1, 1),
                                                                                        (2, 2, 2),
