@@ -33,8 +33,6 @@ public class Main {
                 getPublicProjects(conn);
                 updateProject(conn, 1, "Projeto Atualizado", "Descrição atualizada", false, 1);
                 deleteProject(conn, 3);
-                getNextReservations(conn);
-                getLastProjectReportByIdTest(conn, 1);
 
             } else {
                 System.out.println("Falha ao conectar ou criar o banco de dados.");
@@ -139,33 +137,5 @@ public class Main {
     public static void deleteProject(Connection conn, int id) {
         ProjectCRUD.deleteProject(conn, id);
         System.out.println("Projeto deletado com ID: " + id);
-    }
-
-    public static void getNextReservations(Connection conn) {
-        List<Project> nextProjects = ProjectCRUD.getNextReservations(conn);
-        if (!nextProjects.isEmpty()) {
-            System.out.println("Próximas reservas marcadas:");
-            for (Project project : nextProjects) {
-                System.out.println("Projeto: " + project.getName());
-                System.out.println("Descrição: " + project.getDescription());
-                System.out.println("Data: " + project.getDate());
-                System.out.println("-------------------------");
-            }
-        } else {
-            System.out.println("Nenhuma próxima reserva encontrada.");
-        }
-    }
-
-    public static void getLastProjectReportById(Connection conn, int projectId) {
-        Project lastProject = ProjectCRUD.getLastProjectReportById(conn, projectId);
-        if (lastProject != null) {
-            System.out.println("Último relatório do projeto encontrado:");
-            System.out.println("ID do Projeto: " + lastProject.getIdProject());
-            System.out.println("Nome: " + lastProject.getName());
-            System.out.println("Descrição: " + lastProject.getDescription());
-            System.out.println("Data: " + lastProject.getDate());
-        } else {
-            System.out.println("Nenhum relatório encontrado para o projeto com ID: " + projectId);
-        }
     }
 }

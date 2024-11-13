@@ -1,20 +1,18 @@
 package com.metasconsultoria.entities;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import com.metasconsultoria.annotation.*;
 
+@Table(name = "City")
 public class City {
-    public static final String TABLE = "City";
-    public static final String COD_CITY = "cod_city";
-    public static final String NAME = "name";
-    public static final String STATE = "state";
 
+    @PrimaryKey
+    @Column(name = "cod_city")
     private int idCity;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "state")
     private String state;
 
     public City() {
@@ -26,12 +24,12 @@ public class City {
         this.state = state;
     }
 
-    public String getState() {
-        return state;
+    public int getIdCity() {
+        return idCity;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setIdCity(int idCity) {
+        this.idCity = idCity;
     }
 
     public String getName() {
@@ -42,12 +40,11 @@ public class City {
         this.name = name;
     }
 
-    public int getIdCity() {
-        return idCity;
+    public String getState() {
+        return state;
     }
 
-    public void setIdCity(int idCity) {
-        this.idCity = idCity;
+    public void setState(String state) {
+        this.state = state;
     }
-
 }

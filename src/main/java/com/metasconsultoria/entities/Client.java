@@ -1,19 +1,23 @@
 package com.metasconsultoria.entities;
 
-import java.sql.Connection;
+import com.metasconsultoria.annotation.*;
 
-public class Client extends User {
-    public static final String TABLE = "Client";
-    public static final String COD_CLIENTE = "cod_user";
-    public static final String FK_CITY = "fk_city";
+@Table(name = "Client")
+public class Client  {
+    @PrimaryKey
+    @Column(name = "cod_user")
+    @ForeignKey(table = "User", column = "cod_user")
+    private int idUser;
 
+    @Column(name = "fk_city")
+    @ForeignKey(table = "City", column = "cod_city")
     private int idCity;
 
     public Client() {
     }
 
-    public Client(String name, String password, String email, int idCity) {
-        super(name, password, email);
+    public Client(int idUser, int idCity) {
+        this.idUser = idUser;
         this.idCity = idCity;
     }
 
