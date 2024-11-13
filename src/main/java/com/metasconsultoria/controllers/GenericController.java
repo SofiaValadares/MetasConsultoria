@@ -154,7 +154,7 @@ public class GenericController {
         }
     }
 
-    public static Object selectAll(Connection conn, Class<?> clazz) {
+    public static List<Object> selectAll(Connection conn, Class<?> clazz) {
         List<Object> select = new ArrayList<>();
 
         try {
@@ -179,8 +179,56 @@ public class GenericController {
                         field.set(obj, resultSet.getObject(columnName));
                     }
                 }
-
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return select;
+    }
+
+    public static Object selectById(Connection conn, Class<?> clazz, int id) {
+        Object select = null;
+
+        try {
+            String tableName = (clazz.getAnnotation(Table.class)).name();
+
+            List<String> columnNames = new ArrayList<>();
+            String primaryKeyName = null;
+
+            for (Field field : clazz.getDeclaredFields()) {
+                field.setAccessible(true);
+
+                Column column = field.getAnnotation(Column.class);
+                columnNames.add(column.name());
+
+                if (field.isAnnotationPresent(PrimaryKey.class)) {
+                    if (primaryKeyName == null) {
+                        primaryKeyName = column.name();
+                    } else {
+                        throw new RuntimeException("Primary key already exists");
+                    }
+                }
+            }
+
+            String sql = "SELECT * FROM " + tableName + " WHERE " + primaryKeyName + "=?";
+
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setObject(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            for (Field field : clazz.getDeclaredFields()) {
+                field.setAccessible(true);
+
+                Column columnAnnotation = field.getAnnotation(Column.class);
+                if (columnAnnotation != null) {
+                    String columnName = columnAnnotation.name();
+
+                    field.set(select, resultSet.getObject(columnName));
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

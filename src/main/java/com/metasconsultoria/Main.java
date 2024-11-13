@@ -18,8 +18,9 @@ public class Main {
                 City city = new City("testre", "teste");
                 GenericController.insertInto(conn, City.class, city);
 
-                Client client = new Client(12, 1);
-                GenericController.insertInto(conn, Client.class, client);
+                City city1 = (City) GenericController.selectById(conn, City.class, 1);
+                System.out.println(city1);
+
 
 
             } else {
