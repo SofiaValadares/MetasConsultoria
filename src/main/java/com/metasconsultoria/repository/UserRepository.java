@@ -1,21 +1,21 @@
-package com.metasconsultoria.controllers;
+package com.metasconsultoria.repository;
 
 import com.metasconsultoria.entities.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-public class UserController {
 
-    private UserController() {}
+public class UserRepository {
+
+    private UserRepository() {}
 
     public static void insertInto(Connection conn, User user) throws SQLException {
         String sql = "INSERT INTO User (name, email, password) VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
@@ -24,7 +24,7 @@ public class UserController {
         }
     }
 
-    public static void deleteUserById(Connection conn, int userId) throws SQLException {
+    public static void deleteById(Connection conn, int userId) throws SQLException {
         String sql = "DELETE FROM User WHERE cod_user = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -34,7 +34,7 @@ public class UserController {
         }
     }
 
-    public static void updateUser(Connection conn, User user) throws SQLException {
+    public static void updateData(Connection conn, User user) throws SQLException {
         String sql = "UPDATE User SET name = ?, email = ?, password = ? WHERE cod_user = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -47,8 +47,7 @@ public class UserController {
         }
     }
 
-
-    public static List<User> getAllUsers(Connection conn) throws SQLException {
+    public static List<User> getAll(Connection conn) throws SQLException {
         String sql = "SELECT * FROM User";
         List<User> users = new ArrayList<>();
 
@@ -68,7 +67,7 @@ public class UserController {
         return users;
     }
 
-    public static User selectUserById(Connection conn, int id) throws SQLException {
+    public static User selectById(Connection conn, int id) throws SQLException {
         User user = null;
         String sql = "SELECT * FROM User WHERE cod_user = ?";
 
@@ -85,11 +84,10 @@ public class UserController {
                 }
             }
         }
-
         return user;
     }
 
-    public static User selectUserByLogin(Connection conn, String email, String password) throws SQLException {
+    public static User selectByLogin(Connection conn, String email, String password) throws SQLException {
         User user = null;
         String sql = "SELECT * FROM User WHERE email = ? AND password = ?";
 
@@ -107,7 +105,6 @@ public class UserController {
                 }
             }
         }
-
         return user;
     }
 }
