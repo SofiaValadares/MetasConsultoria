@@ -1,18 +1,10 @@
 package com.metasconsultoria.entities;
 
-import com.metasconsultoria.annotation.*;
 
-@Table(name = "City")
 public class City {
 
-    @PrimaryKey
-    @Column(name = "cod_city")
     private int idCity;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "state")
     private String state;
 
     public City() {

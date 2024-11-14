@@ -1,36 +1,14 @@
 package com.metasconsultoria.entities;
 
-import com.metasconsultoria.annotation.*;
-
-@Table(name = "Collaborator")
 public class Collaborator  {
-    @PrimaryKey
-    @Column(name = "cod_user")
-    @ForeignKey(table = "User", column = "cod_user")
     private int idUser;
-
-    @Column(name = "city")
     private String city;
-
-    @Column(name = "neighborhood")
     private String neighborhood;
-
-    @Column(name = "street")
     private String street;
-
-    @Column(name = "house_number")
     private int number;
-
-    @Column(name = "complement")
     private String complement;
-
-    @Column(name = "phone1")
     private String phoneNumber1;
-
-    @Column(name = "phone2")
     private String phoneNumber2;
-
-    @Column(name = "supervised_by")
     private int supervisedBy;
 
     public Collaborator() {

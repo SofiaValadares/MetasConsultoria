@@ -1,23 +1,10 @@
 package com.metasconsultoria.entities;
 
-import com.metasconsultoria.annotation.*;
-
-
-@Table(name = "User")
 public class User {
-    @PrimaryKey
-    @Column(name = "cod_user")
     private int idUser;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "password")
     private String password;
-
-    @Column(name = "email")
     private String email;
-
 
     public User() {
 
