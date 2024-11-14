@@ -129,6 +129,28 @@ CREATE TABLE RCollaborator_Project_Report (
         FOREIGN KEY (fk_report) REFERENCES Report(cod_report)
 );
 
+CREATE TRIGGER password_min
+    AFTER INSERT
+    ON User
+    FOR EACH ROW
+BEGIN
+    IF CHAR_LENGTH(NEW.password) < 8 OR CHAR_LENGTH(NEW.password) > 16 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A senha deve ter entre 8 e 16 caracteres.';
+    END IF;
+
+    IF NEW.password NOT REGEXP '[A-Z]' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A senha deve conter ao menos uma letra maiúscula.';
+    END IF;
+
+    IF NEW.password NOT REGEXP '[a-z]' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A senha deve conter ao menos uma letra minúscula.';
+    END IF;
+
+    IF NEW.password NOT REGEXP '[0-9]' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A senha deve conter ao menos um número.';
+    END IF;
+END;
+
 
 INSERT INTO User (name, email, password) VALUES
                                              ('Andresa', 'andresa@exemplo.com', 'Oi12345!'),
