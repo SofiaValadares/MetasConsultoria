@@ -47,7 +47,7 @@ public class UserRepository {
         }
     }
 
-    public static List<User> getAll(Connection conn) throws SQLException {
+    public static List<User> selectAll(Connection conn) throws SQLException {
         String sql = "SELECT * FROM User";
         List<User> users = new ArrayList<>();
 
