@@ -67,7 +67,7 @@ public class CityRepository {
         return cities;
     }
 
-    public static City selectById(Connection conn, int id) throws SQLException{
+    public static City selectById(Connection conn, int id) throws SQLException {
         City city = null;
         String sql = "SELECT * FROM City WHERE cod_city = ?";
 
