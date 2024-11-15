@@ -55,11 +55,13 @@ public class UserRepository {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                User user = new User();
-                user.setIdUser(rs.getInt("cod_user"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
+                User user = User.builder()
+                        .idUser(rs.getInt("cod_user"))
+                        .name(rs.getString("name"))
+                        .email(rs.getString("email"))
+                        .password(rs.getString("password"))
+                        .build();
+
 
                 users.add(user);
             }
@@ -76,32 +78,33 @@ public class UserRepository {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    user = new User();
-                    user.setIdUser(rs.getInt("cod_user"));
-                    user.setName(rs.getString("name"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
+                    user = User.builder()
+                            .idUser(rs.getInt("cod_user"))
+                            .name(rs.getString("name"))
+                            .email(rs.getString("email"))
+                            .password(rs.getString("password"))
+                            .build();
                 }
             }
         }
         return user;
     }
 
-    public static User selectByLogin(Connection conn, String email, String password) throws SQLException {
+    public static User selectByEmail(Connection conn, String email) throws SQLException {
         User user = null;
-        String sql = "SELECT * FROM User WHERE email = ? AND password = ?";
+        String sql = "SELECT * FROM User WHERE email = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
-            ps.setString(2, password);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    user = new User();
-                    user.setIdUser(rs.getInt("cod_user"));
-                    user.setName(rs.getString("name"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
+                    user = User.builder()
+                            .idUser(rs.getInt("cod_user"))
+                            .name(rs.getString("name"))
+                            .email(rs.getString("email"))
+                            .password(rs.getString("password"))
+                            .build();
                 }
             }
         }
