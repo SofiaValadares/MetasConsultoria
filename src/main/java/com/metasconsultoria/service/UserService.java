@@ -34,14 +34,20 @@ public class UserService {
             return;
         }
 
-        User userTest = UserRepository.selectByEmail(conn, user.getEmail());
+        User oldUser = UserRepository.selectById(conn, user.getIdUser());
 
-        if (userTest != null && userTest.getIdUser() != user.getIdUser()) {
-            return;
+        if (!Objects.equals(oldUser.getEmail(), user.getEmail())) {
+            User userSafeTest = UserRepository.selectByEmail(conn, user.getEmail());
+
+            if (userSafeTest != null) {
+                return;
+            }
         }
 
         UserRepository.updateData(conn, user);
     }
+
+
 
     public static User login(String email, String password) throws SQLException {
         User user = UserRepository.selectByEmail(conn, email);

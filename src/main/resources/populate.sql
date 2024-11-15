@@ -5,7 +5,8 @@ CREATE TABLE User (
                       cod_user 		INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
                       name 			VARCHAR(40) NOT NULL,
                       email 		VARCHAR(31) NOT NULL UNIQUE,
-                      password 		VARCHAR(16) NOT NULL
+                      password 		VARCHAR(16) NOT NULL,
+                      create_date   DATE DEFAULT  CURRENT_DATE
 );
 
 CREATE TABLE Collaborator (
@@ -130,7 +131,7 @@ CREATE TABLE RCollaborator_Project_Report (
 );
 
 CREATE TRIGGER password_min
-    AFTER INSERT
+    AFTER UPDATE
     ON User
     FOR EACH ROW
 BEGIN
