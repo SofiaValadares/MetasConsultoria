@@ -85,4 +85,29 @@ public class ClientRepository {
 
         return client;
     }
+
+    public static List<Client> selectByCollaboratorId(Connection conn, int idCollaborator) throws SQLException {
+        List<Client> clients = new ArrayList<>();
+        String sql = "SELECT client.cod_user, client.fk_city " +
+                "FROM Client client " +
+                "JOIN R_Collaborator_Client_Project r_ccp on r_ccp.fk_client = client.cod_user " +
+                "WHERE r_ccp.fk_collaborator = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idCollaborator);
+
+            try (ResultSet rs = ps.executeQuery()){
+                while (rs.next()) {
+                    Client client = Client.builder()
+                            .idUser(rs.getInt("client.cod_user"))
+                            .idCity(rs.getInt("client.fk_city"))
+                            .build();
+
+                    clients.add(client);
+                }
+            }
+        }
+
+        return clients;
+    }
 }
