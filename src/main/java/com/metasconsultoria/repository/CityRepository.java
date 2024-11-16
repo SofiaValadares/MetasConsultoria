@@ -54,14 +54,14 @@ public class CityRepository {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                City city = new City();
-                city.setIdCity(rs.getInt("cod_city"));
-                city.setName(rs.getString("name"));
-                city.setState(rs.getString("state"));
+                City city = City.builder()
+                        .idCity(rs.getInt("cod_city"))
+                        .name(rs.getString("name"))
+                        .state(rs.getString("state"))
+                        .build();
 
                 cities.add(city);
             }
-
         }
 
         return cities;
@@ -76,10 +76,33 @@ public class CityRepository {
 
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()) {
-                    city = new City();
-                    city.setIdCity(rs.getInt("cod_city"));
-                    city.setName(rs.getString("name"));
-                    city.setState(rs.getString("state"));
+                    city = City.builder()
+                            .idCity(rs.getInt("cod_city"))
+                            .name(rs.getString("name"))
+                            .state(rs.getString("state"))
+                            .build();
+                }
+            }
+        }
+
+        return city;
+    }
+
+    public static City selectCityByNameAndState(Connection conn, String name, String state) throws SQLException {
+        City city = null;
+        String sql = "SELECT * FROM City WHERE name = ? AND state = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, state);
+
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()) {
+                    city = City.builder()
+                            .idCity(rs.getInt("cod_city"))
+                            .name(rs.getString("name"))
+                            .state(rs.getString("state"))
+                            .build();
                 }
             }
         }
