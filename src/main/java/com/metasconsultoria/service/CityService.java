@@ -6,6 +6,7 @@ import com.metasconsultoria.repository.CityRepository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class CityService {
     private static final Connection conn = ConnData.connection;
@@ -22,5 +23,22 @@ public class CityService {
                 .build();
 
         CityRepository.insetInto(conn, city);
+    }
+
+    public static void deleteCity(City city) throws SQLException {
+        CityRepository.deleteById(conn, city.getIdCity());
+    }
+
+    public static void updateCity(City city) throws SQLException {
+
+        if (CityRepository.selectCityByNameAndState(conn, city.getName(), city.getState()) != null) {
+            return;
+        }
+
+        CityRepository.updateData(conn, city);
+    }
+
+    public static List<City> getAllCities () throws SQLException {
+        return CityRepository.selectAll(conn);
     }
 }
