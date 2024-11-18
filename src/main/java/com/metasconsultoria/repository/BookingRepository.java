@@ -11,32 +11,28 @@ public class BookingRepository {
     private BookingRepository() {}
 
     public static void insertInto(Connection conn, Booking booking) throws SQLException {
-        String sql = "INSERT INTO Reservation (start_time, end_time, day, reserved_by, cod_project, fk_collaborator_cod_user, fk_client_cod_user) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Reservation (start_time, end_time, day, fk_collaborator_cod_user, fk_client_cod_user) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setTime(1, booking.getStartTime());
-            ps.setTime(2, booking.getEndTime());
-            ps.setDate(3, new java.sql.Date(booking.getDay().getTime()));
-            ps.setInt(4, booking.getReservedBy());
-            ps.setInt(5, booking.getCodProject());
-            ps.setInt(6, booking.getCollaborator().getIdUser());
-            ps.setInt(7, booking.getWhoBooked().getIdUser());
+            ps.setTime(1, booking.getTimeStart());
+            ps.setTime(2, booking.getTimeEnd());
+            ps.setDate(3, new java.sql.Date(booking.getDate().getTime()));
+            ps.setInt(6, booking.getIdCollaborator());
+            ps.setInt(7, booking.getIdClient());
 
             ps.executeUpdate();
         }
     }
 
     public static void updateData(Connection conn, Booking booking) throws SQLException {
-        String sql = "UPDATE Reservation SET start_time = ?, end_time = ?, day = ?, reserved_by = ?, cod_project = ?, fk_collaborator_cod_user = ?, fk_client_cod_user = ? WHERE reservation_id = ?";
+        String sql = "UPDATE Reservation SET start_time = ?, end_time = ?, day = ?, fk_collaborator_cod_user = ?, fk_client_cod_user = ? WHERE reservation_id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setTime(1, booking.getStartTime());
-            ps.setTime(2, booking.getEndTime());
-            ps.setDate(3, new java.sql.Date(booking.getDay().getTime()));
-            ps.setInt(4, booking.getReservedBy());
-            ps.setInt(5, booking.getCodProject());
-            ps.setInt(6, booking.getCollaborator().getIdUser());
-            ps.setInt(7, booking.getWhoBooked().getIdUser());
+            ps.setTime(1, booking.getTimeStart());
+            ps.setTime(2, booking.getTimeEnd());
+            ps.setDate(3, new java.sql.Date(booking.getDate().getTime()));
+            ps.setInt(6, booking.getIdCollaborator());
+            ps.setInt(7, booking.getIdClient());
             ps.setInt(8, booking.getIdBooking());
 
             ps.executeUpdate();
@@ -60,15 +56,15 @@ public class BookingRepository {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                Booking booking = new Booking();
-                booking.setIdBooking(rs.getInt("reservation_id"));
-                booking.setStartTime(rs.getTime("start_time"));
-                booking.setEndTime(rs.getTime("end_time"));
-                booking.setDay(rs.getDate("day"));
-                booking.setReservedBy(rs.getInt("reserved_by"));
-                booking.setCodProject(rs.getInt("cod_project"));
-                // Aqui você precisará buscar os objetos Collaborator e User correspondentes
-                // e setar no objeto booking
+                Booking booking = Booking.builder()
+                        .idBooking(rs.getInt("reservation_id"))
+                        .timeStart(rs.getTime("start_time"))
+                        .timeEnd(rs.getTime("start_time"))
+                        .date(rs.getDate("day"))
+                        .idCollaborator(rs.getInt("fk_collaborator_cod_user"))
+                        .idClient(rs.getInt("fk_client_cod_user"))
+                        .build();
+
 
                 bookings.add(booking);
             }
@@ -86,15 +82,14 @@ public class BookingRepository {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    booking = new Booking();
-                    booking.setIdBooking(rs.getInt("reservation_id"));
-                    booking.setStartTime(rs.getTime("start_time"));
-                    booking.setEndTime(rs.getTime("end_time"));
-                    booking.setDay(rs.getDate("day"));
-                    booking.setReservedBy(rs.getInt("reserved_by"));
-                    booking.setCodProject(rs.getInt("cod_project"));
-                    // Aqui você precisará buscar os objetos Collaborator e User correspondentes
-                    // e setar no objeto booking
+                    booking = Booking.builder()
+                            .idBooking(rs.getInt("reservation_id"))
+                            .timeStart(rs.getTime("start_time"))
+                            .timeEnd(rs.getTime("start_time"))
+                            .date(rs.getDate("day"))
+                            .idCollaborator(rs.getInt("fk_collaborator_cod_user"))
+                            .idClient(rs.getInt("fk_client_cod_user"))
+                            .build();
                 }
             }
         }

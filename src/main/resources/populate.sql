@@ -92,12 +92,9 @@ CREATE TABLE Reservation (
     start_time                 TIME NOT NULL,
     end_time                   TIME NOT NULL,
     day                        DATE NOT NULL,
-    reserved_by                INTEGER NOT NULL,
-    cod_project        INTEGER NOT NULL,
-
 
     fk_collaborator_cod_user    INTEGER NOT NULL,
-    fk_client_cod_user        INTEGER NOT NULL,
+    fk_client_cod_user        INTEGER,
 
     CONSTRAINT fk_reservation_collaborator
         FOREIGN KEY (fk_collaborator_cod_user) REFERENCES Collaborator(cod_user),

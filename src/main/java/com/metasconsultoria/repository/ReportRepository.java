@@ -51,11 +51,11 @@ public class ReportRepository {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                Report report = new Report();
-                report.setIdReport(rs.getInt("cod_report"));
-                report.setDate(rs.getDate("report_date"));
-                report.setDescription(rs.getString("description"));
-                // Você pode precisar buscar o objeto Collaborator correspondente e setar no report
+                Report report = Report.builder()
+                        .idReport(rs.getInt("cod_report"))
+                        .date(rs.getDate("report_date"))
+                        .description(rs.getString("description"))
+                        .build();
 
                 reports.add(report);
             }
@@ -73,11 +73,11 @@ public class ReportRepository {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    report = new Report();
-                    report.setIdReport(rs.getInt("cod_report"));
-                    report.setDate(rs.getDate("report_date"));
-                    report.setDescription(rs.getString("description"));
-                    // Você pode precisar buscar o objeto Collaborator correspondente e setar no report
+                    report = Report.builder()
+                            .idReport(rs.getInt("cod_report"))
+                            .date(rs.getDate("report_date"))
+                            .description(rs.getString("description"))
+                            .build();
                 }
             }
         }
