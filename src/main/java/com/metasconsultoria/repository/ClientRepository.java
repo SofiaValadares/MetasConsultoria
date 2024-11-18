@@ -1,5 +1,6 @@
 package com.metasconsultoria.repository;
 
+import com.metasconsultoria.database.ConnectDatabase;
 import com.metasconsultoria.entities.Client;
 
 import java.sql.Connection;
@@ -13,7 +14,9 @@ public class ClientRepository {
 
     private ClientRepository() {}
 
-    public static void insetInto(Connection conn, Client client) throws SQLException {
+    public static void insetInto(Client client) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "INSERT INTO Client (cod_user, fk_city) VALUES (?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -21,20 +24,32 @@ public class ClientRepository {
             ps.setInt(2, client.getIdCity());
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void deletById(Connection conn, int id) throws SQLException {
+    public static void deletById(int id) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "DELETE FROM Client WHERE cod_user = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void updateData(Connection conn, Client client) throws SQLException {
+    public static void updateData(Client client) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "UPDATE Client SET fk_city = ? WHERE cod_user = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -42,10 +57,16 @@ public class ClientRepository {
             ps.setInt(2, client.getIdUser());
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static List<Client> selectAll(Connection conn) throws SQLException {
+    public static List<Client> selectAll() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         List<Client> clients = new ArrayList<>();
         String sql = "SELECT * FROM Client";
 
@@ -61,12 +82,17 @@ public class ClientRepository {
                 clients.add(client);
             }
 
+            rs.close();
+            ps.close();
         }
 
+        conn.close();
         return clients;
     }
 
-    public static Client selectById(Connection conn, int id) throws SQLException {
+    public static Client selectById(int id) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         Client client = null;
         String sql = "SELECT * FROM Client WHERE cod_user = ?";
 
@@ -80,13 +106,20 @@ public class ClientRepository {
                             .idCity(rs.getInt("fk_city"))
                             .build();
                 }
+
+                rs.close();
             }
+
+            ps.close();
         }
 
+        conn.close();
         return client;
     }
 
-    public static List<Client> selectByCollaboratorId(Connection conn, int idCollaborator) throws SQLException {
+    public static List<Client> selectByCollaboratorId(int idCollaborator) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         List<Client> clients = new ArrayList<>();
         String sql = "SELECT client.cod_user, client.fk_city " +
                 "FROM Client client " +
@@ -105,9 +138,14 @@ public class ClientRepository {
 
                     clients.add(client);
                 }
+
+                rs.close();
             }
+
+            ps.close();
         }
 
+        conn.close();
         return clients;
     }
 }

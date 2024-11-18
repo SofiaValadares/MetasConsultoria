@@ -43,7 +43,7 @@ public class ConnectDatabase {
         } catch (SQLException | IOException e) {
             System.out.println("Erro ao conectar ao banco de dados: " + e.getMessage());
             return null;
-        }
+        } 
     }
 
     // Método para verificar se o banco de dados está vazio (ou seja, se as tabelas não existem)

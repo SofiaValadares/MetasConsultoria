@@ -1,5 +1,6 @@
 package com.metasconsultoria.repository;
 
+import com.metasconsultoria.database.ConnectDatabase;
 import com.metasconsultoria.entities.User;
 
 import java.sql.*;
@@ -10,38 +11,44 @@ public class UserRepository {
 
     private UserRepository() {}
 
-    public static int insertInto(Connection conn, User user) throws SQLException {
+    public static void insertInto(User user) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "INSERT INTO User (name, email, password) VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
 
             ps.executeUpdate();
 
-            // Recuperar as chaves geradas
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    return rs.getInt(1); // Retorna o ID gerado
-                }
-            }
+            ps.close();
         }
-        return -1; // Retorna -1 caso não tenha gerado um ID
+
+        conn.close();
     }
 
 
-    public static void deleteById(Connection conn, int userId) throws SQLException {
+    public static void deleteById(int userId) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "DELETE FROM User WHERE cod_user = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void updateData(Connection conn, User user) throws SQLException {
+    public static void updateData(User user) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "UPDATE User SET name = ?, email = ?, password = ? WHERE cod_user = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -51,10 +58,16 @@ public class UserRepository {
             ps.setInt(4, user.getIdUser());
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static List<User> selectAll(Connection conn) throws SQLException {
+    public static List<User> selectAll() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "SELECT * FROM User";
         List<User> users = new ArrayList<>();
 
@@ -72,11 +85,18 @@ public class UserRepository {
 
                 users.add(user);
             }
+
+            rs.close();
+            ps.close();
         }
+
+        conn.close();
         return users;
     }
 
-    public static User selectById(Connection conn, int id) throws SQLException {
+    public static User selectById(int id) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         User user = null;
         String sql = "SELECT * FROM User WHERE cod_user = ?";
 
@@ -92,12 +112,20 @@ public class UserRepository {
                             .password(rs.getString("password"))
                             .build();
                 }
+
+                rs.close();
             }
+            
+            ps.close();
         }
+
+        conn.close();
         return user;
     }
 
-    public static User selectByEmail(Connection conn, String email) throws SQLException {
+    public static User selectByEmail(String email) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();     
+
         User user = null;
         String sql = "SELECT * FROM User WHERE email = ?";
 
@@ -113,8 +141,14 @@ public class UserRepository {
                             .password(rs.getString("password"))
                             .build();
                 }
+
+                rs.close();
             }
+
+            ps.close();
         }
+
+        conn.close();
         return user;
     }
 }

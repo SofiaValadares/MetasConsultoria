@@ -1,5 +1,6 @@
 package com.metasconsultoria.repository;
 
+import com.metasconsultoria.database.ConnectDatabase;
 import com.metasconsultoria.entities.Report;
 
 import java.sql.*;
@@ -10,7 +11,9 @@ public class ReportRepository {
 
     private ReportRepository() {}
 
-    public static void insertInto(Connection conn, Report report) throws SQLException {
+    public static void insertInto(Report report) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+        
         String sql = "INSERT INTO Report (report_date, description) VALUES (?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -18,10 +21,16 @@ public class ReportRepository {
             ps.setString(2, report.getDescription());
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void updateData(Connection conn, Report report) throws SQLException {
+    public static void updateData(Report report) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "UPDATE Report SET report_date = ?, description = ? WHERE cod_report = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -30,20 +39,32 @@ public class ReportRepository {
             ps.setInt(3, report.getIdReport());
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void deleteById(Connection conn, int id) throws SQLException {
+    public static void deleteById(int id) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "DELETE FROM Report WHERE cod_report = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static List<Report> selectAll(Connection conn) throws SQLException {
+    public static List<Report> selectAll() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+        
         List<Report> reports = new ArrayList<>();
         String sql = "SELECT * FROM Report";
 
@@ -59,12 +80,19 @@ public class ReportRepository {
 
                 reports.add(report);
             }
+
+            rs.close();
+            ps.close();
         }
 
+
+        conn.close();
         return reports;
     }
 
-    public static Report selectById(Connection conn, int id) throws SQLException {
+    public static Report selectById(int id) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         Report report = null;
         String sql = "SELECT * FROM Report WHERE cod_report = ?";
 
@@ -79,9 +107,15 @@ public class ReportRepository {
                             .description(rs.getString("description"))
                             .build();
                 }
+
+                rs.close();
             }
+
+            ps.close();
         }
 
+
+        conn.close();
         return report;
     }
 }

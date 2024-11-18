@@ -1,0 +1,210 @@
+tilo do site tá aqui */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5e5d8;
+    padding-top: 70px;
+    padding-bottom: 50px;
+  }
+  
+  .home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+
+  .home-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #857c65;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+  
+  .logo {
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .menu {
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  .menu-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: #fff;
+    border: 1px solid #857c65;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 11;
+  }
+  
+  .menu-dropdown button {
+    display: block;
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .menu-dropdown button:hover {
+    background-color: #f5e5d8;
+  }
+  
+
+  .home-tabs {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 20px;
+    gap: 10px;
+  }
+  
+  .tab {
+    background-color: transparent;
+    border: none;
+    color: #857c65;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  
+  .tab.selected,
+  .tab:hover {
+    background-color: #8b5e3c;
+    color: white;
+  }
+  
+ 
+  .projetos-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .projeto-card {
+    background-color: white;
+    border: 1px solid #857c65;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .projeto-card button {
+    background-color: #8b5e3c;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .projeto-card button:hover {
+    background-color: #d39f6a;
+  }
+  
+
+  .home-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #857c65;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+  }
+  
+  .detalhes-projeto {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f5e5d8;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .detalhes-projeto h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #8b5e3c;
+  }
+  
+  .descricao {
+    margin-top: 20px;
+  }
+  
+  .descricao h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #8b5e3c;
+  }
+  
+  .tabela {
+    margin-top: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th,
+  table td {
+    border: 1px solid #857c65;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #857c65;
+    color: white;
+  }
+  
+  select {
+    padding: 5px;
+    border: 1px solid #857c65;
+    border-radius: 4px;
+  }
+
+  .funcionario-selector {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .funcionario-selector label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #8b5e3c;
+  }
+  
+  .funcionario-selector select {
+    padding: 10px;
+    border: 1px solid #8b5e3c;
+    border-radius: 4px;
+    font-size: 16px;
+  }

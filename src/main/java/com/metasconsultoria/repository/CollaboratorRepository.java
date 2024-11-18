@@ -1,5 +1,6 @@
 package com.metasconsultoria.repository;
 
+import com.metasconsultoria.database.ConnectDatabase;
 import com.metasconsultoria.entities.Collaborator;
 
 import java.sql.Connection;
@@ -13,7 +14,9 @@ public class CollaboratorRepository {
 
     private CollaboratorRepository() {}
 
-    public static void insertInto(Connection conn, Collaborator collaborator) throws SQLException {
+    public static void insertInto(Collaborator collaborator) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "INSERT INTO Collaborator (city, neighborhood, street, house_number, complement, phone1, cod_user) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -25,19 +28,28 @@ public class CollaboratorRepository {
             ps.setString(6, collaborator.getPhoneNumber1());
             ps.setInt(8, collaborator.getIdUser());
             ps.executeUpdate();
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void deleteById(Connection conn, int idUser) throws SQLException {
+    public static void deleteById(int idUser) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "DELETE FROM Collaborator WHERE cod_user = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idUser);
             ps.executeUpdate();
         }
+
+        conn.close();
     }
 
-    public static void updateData(Connection conn, Collaborator collaborator) throws SQLException {
+    public static void updateData(Collaborator collaborator) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "UPDATE Collaborator SET city = ?, neighborhood = ?, street = ?, house_number = ?, complement = ?, phone1 = ?, phone2 = ?, supervised_by = ? WHERE cod_user = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -51,10 +63,15 @@ public class CollaboratorRepository {
             ps.setObject(8, collaborator.getSupervisedBy());
             ps.setInt(9, collaborator.getIdUser());
             ps.executeUpdate();
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static List<Collaborator> selectAll(Connection conn) throws SQLException {
+    public static List<Collaborator> selectAll() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         List<Collaborator> collaborators = new ArrayList<>();
         String sql = "SELECT * FROM Collaborator";
 
@@ -75,12 +92,18 @@ public class CollaboratorRepository {
                         .build();
                 collaborators.add(collaborator);
             }
+
+            rs.close();
+            ps.close();
         }
 
+        conn.close();
         return collaborators;
     }
 
-    public static Collaborator selectById(Connection conn, int idUser) throws SQLException {
+    public static Collaborator selectById(int idUser) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         Collaborator collaborator = null;
         String sql = "SELECT * FROM Collaborator WHERE cod_user = ?";
 
@@ -101,9 +124,14 @@ public class CollaboratorRepository {
                             .supervisedBy(rs.getObject("supervised_by") != null ? rs.getInt("supervised_by") : null)
                             .build();
                 }
+
+                rs.close();
             }
+
+            ps.close();
         }
 
+        conn.close();
         return collaborator;
     }
 }

@@ -1,5 +1,6 @@
 package com.metasconsultoria.repository;
 
+import com.metasconsultoria.database.ConnectDatabase;
 import com.metasconsultoria.entities.Booking;
 
 import java.sql.*;
@@ -10,7 +11,9 @@ public class BookingRepository {
 
     private BookingRepository() {}
 
-    public static void insertInto(Connection conn, Booking booking) throws SQLException {
+    public static void insertInto(Booking booking) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+        
         String sql = "INSERT INTO Reservation (start_time, end_time, day, fk_collaborator_cod_user, fk_client_cod_user) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -21,10 +24,16 @@ public class BookingRepository {
             ps.setInt(7, booking.getIdClient());
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void updateData(Connection conn, Booking booking) throws SQLException {
+    public static void updateData(Booking booking) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "UPDATE Reservation SET start_time = ?, end_time = ?, day = ?, fk_collaborator_cod_user = ?, fk_client_cod_user = ? WHERE reservation_id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -36,24 +45,36 @@ public class BookingRepository {
             ps.setInt(8, booking.getIdBooking());
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void deleteById(Connection conn, int id) throws SQLException {
+    public static void deleteById(int id) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "DELETE FROM Reservation WHERE reservation_id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static List<Booking> selectAll(Connection conn) throws SQLException {
+    public static List<Booking> selectAll() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         List<Booking> bookings = new ArrayList<>();
         String sql = "SELECT * FROM Reservation";
 
         try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+            ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Booking booking = Booking.builder()
@@ -68,12 +89,18 @@ public class BookingRepository {
 
                 bookings.add(booking);
             }
+
+            rs.close();
+            ps.close();
         }
 
+        conn.close();
         return bookings;
     }
 
-    public static Booking selectById(Connection conn, int id) throws SQLException {
+    public static Booking selectById(int id) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         Booking booking = null;
         String sql = "SELECT * FROM Reservation WHERE reservation_id = ?";
 
@@ -91,9 +118,14 @@ public class BookingRepository {
                             .idClient(rs.getInt("fk_client_cod_user"))
                             .build();
                 }
+
+                rs.close();
             }
+            
+            ps.close();
         }
 
+        conn.close();
         return booking;
     }
 }

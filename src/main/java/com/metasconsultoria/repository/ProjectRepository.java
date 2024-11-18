@@ -1,5 +1,6 @@
 package com.metasconsultoria.repository;
 
+import com.metasconsultoria.database.ConnectDatabase;
 import com.metasconsultoria.entities.Project;
 
 import java.sql.*;
@@ -10,7 +11,9 @@ public class ProjectRepository {
 
     private ProjectRepository() {}
 
-    public static void insertInto(Connection conn, Project project) throws SQLException {
+    public static void insertInto(Project project) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "INSERT INTO Project (name, description, public, date, fk_city) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -20,19 +23,29 @@ public class ProjectRepository {
             ps.setDate(4, (Date) project.getDate());
             ps.setInt(5, project.getIdProject());
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void deleteById(Connection conn, int codProject) throws SQLException {
+    public static void deleteById(int codProject) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
         String sql = "DELETE FROM Project WHERE cod_project = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, codProject);
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void updateData(Connection conn, Project project) throws SQLException {
+    public static void updateData(Project project) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
         String sql = "UPDATE Project SET name = ?, description = ?, public = ?, date = ?, fk_city = ? WHERE cod_project = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -43,10 +56,15 @@ public class ProjectRepository {
             ps.setInt(5, project.getIdCity());
             ps.setInt(6, project.getIdProject());
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static List<Project> selectAll(Connection conn) throws SQLException {
+    public static List<Project> selectAll() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
         List<Project> projects = new ArrayList<>();
         String sql = "SELECT * FROM Project";
 
@@ -64,12 +82,17 @@ public class ProjectRepository {
                         .build();
                 projects.add(project);
             }
+
+            rs.close();
+            ps.close();
         }
 
+        conn.close();
         return projects;
     }
 
-    public static Project selectById(Connection conn, int codProject) throws SQLException {
+    public static Project selectById(int codProject) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
         Project project = null;
         String sql = "SELECT * FROM Project WHERE cod_project = ?";
 
@@ -87,9 +110,14 @@ public class ProjectRepository {
                             .idCity(rs.getInt("fk_city"))
                             .build();
                 }
+
+                rs.close();
             }
+
+            ps.close();
         }
 
+        conn.close();
         return project;
     }
 }

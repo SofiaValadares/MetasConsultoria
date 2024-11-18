@@ -1,5 +1,6 @@
 package com.metasconsultoria.repository;
 
+import com.metasconsultoria.database.ConnectDatabase;
 import com.metasconsultoria.entities.City;
 
 import java.sql.Connection;
@@ -13,7 +14,9 @@ public class CityRepository {
 
     private CityRepository() {}
 
-    public static void insetInto(Connection conn, City city) throws SQLException {
+    public static void insetInto(City city) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+        
         String sql = "INSERT INTO User (name, state) VALUES (?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -21,20 +24,32 @@ public class CityRepository {
             ps.setString(2, city.getState());
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void deleteById(Connection conn, int id) throws SQLException {
+    public static void deleteById(int id) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "DELETE FROM City WHERE cod_city = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setInt(1, id);
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static void updateData(Connection conn, City city) throws SQLException {
+    public static void updateData(City city) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         String sql = "UPDATE City SET name = ?, state = ? WHERE cod_city = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)){
@@ -43,10 +58,16 @@ public class CityRepository {
             ps.setInt(3, city.getIdCity());
 
             ps.executeUpdate();
+
+            ps.close();
         }
+
+        conn.close();
     }
 
-    public static List<City> selectAll(Connection conn) throws SQLException {
+    public static List<City> selectAll() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         List<City> cities = new ArrayList<>();
         String sql = "SELECT * FROM City";
 
@@ -62,12 +83,18 @@ public class CityRepository {
 
                 cities.add(city);
             }
+
+            rs.close();
+            ps.close();
         }
 
+        conn.close();
         return cities;
     }
 
-    public static City selectById(Connection conn, int id) throws SQLException {
+    public static City selectById(int id) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         City city = null;
         String sql = "SELECT * FROM City WHERE cod_city = ?";
 
@@ -82,13 +109,20 @@ public class CityRepository {
                             .state(rs.getString("state"))
                             .build();
                 }
+
+                rs.close();
             }
+
+            ps.close();
         }
 
+        conn.close();
         return city;
     }
 
-    public static City selectCityByNameAndState(Connection conn, String name, String state) throws SQLException {
+    public static City selectCityByNameAndState(String name, String state) throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
         City city = null;
         String sql = "SELECT * FROM City WHERE name = ? AND state = ?";
 
@@ -104,9 +138,14 @@ public class CityRepository {
                             .state(rs.getString("state"))
                             .build();
                 }
+
+                rs.close();
             }
+
+            ps.close();
         }
 
+        conn.close();
         return city;
     }
 }

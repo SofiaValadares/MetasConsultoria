@@ -1,33 +1,32 @@
 package com.metasconsultoria.service;
 
-import com.metasconsultoria.database.ConnData;
 import com.metasconsultoria.entities.User;
 import com.metasconsultoria.repository.UserRepository;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
 public class UserService {
-    private static final Connection conn = ConnData.connection;
+
     public static void insertUser(String name, String email, String password) throws SQLException {
+        
         User user = User.builder()
                 .name(name)
                 .email(email)
                 .password(password)
                 .build();
 
-        if (UserRepository.selectByEmail(conn, email) == null) {
+        if (UserRepository.selectByEmail(email) == null) {
             return;
         }
 
-        UserRepository.insertInto(conn, user);
+        UserRepository.insertInto(user);
 
     }
 
     public static void deleteUser(User user) throws SQLException {
-        UserRepository.deleteById(conn, user.getIdUser());
+        UserRepository.deleteById(user.getIdUser());
     }
 
     public static void updateUser(User user) throws SQLException {
@@ -35,23 +34,24 @@ public class UserService {
             return;
         }
 
-        User oldUser = UserRepository.selectById(conn, user.getIdUser());
+        User oldUser = UserRepository.selectById(user.getIdUser());
 
         if (!Objects.equals(oldUser.getEmail(), user.getEmail())) {
-            User userSafeTest = UserRepository.selectByEmail(conn, user.getEmail());
+            User userSafeTest = UserRepository.selectByEmail(user.getEmail());
 
             if (userSafeTest != null) {
                 return;
             }
         }
 
-        UserRepository.updateData(conn, user);
+        UserRepository.updateData(user);
     }
 
 
 
     public static User login(String email, String password) throws SQLException {
-        User user = UserRepository.selectByEmail(conn, email);
+
+        User user = UserRepository.selectByEmail(email);
 
         if (Objects.equals(user.getPassword(), password)) {
             return user;
@@ -61,10 +61,10 @@ public class UserService {
     }
 
     public static User getUser(int idUser) throws SQLException {
-        return UserRepository.selectById(conn, idUser);
+        return UserRepository.selectById(idUser);
     }
 
     public static List<User> getAllUsers() throws SQLException {
-        return UserRepository.selectAll(conn);
+        return UserRepository.selectAll();
     }
 }
