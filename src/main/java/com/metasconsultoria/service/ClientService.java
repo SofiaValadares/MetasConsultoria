@@ -11,6 +11,7 @@ import com.metasconsultoria.repository.UserRepository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ClientService {
     private static final Connection conn = ConnData.connection;
@@ -36,6 +37,14 @@ public class ClientService {
 
     public static void deletClient (Client client) throws SQLException {
         ClientRepository.deletById(conn, client.getIdUser());
+    }
+
+    public static Client getClient (User user) throws SQLException {
+        return ClientRepository.selectById(conn, user.getIdUser());
+    }
+
+    public static List<Client> getAllClientes () throws SQLException {
+        return ClientRepository.selectAll(conn);
     }
 
 }
