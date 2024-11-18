@@ -2,6 +2,7 @@ package com.metasconsultoria.service;
 
 import com.metasconsultoria.database.ConnData;
 import com.metasconsultoria.entities.Collaborator;
+
 import com.metasconsultoria.entities.User;
 import com.metasconsultoria.repository.ClientRepository;
 import com.metasconsultoria.repository.CollaboratorRepository;
@@ -34,6 +35,5 @@ public class CollaboratorService {
 
         CollaboratorRepository.insertInto(conn, collaborator);
     }
-
 
 }

@@ -41,4 +41,8 @@ public class CityService {
     public static List<City> getAllCities () throws SQLException {
         return CityRepository.selectAll(conn);
     }
+    public static City getCityById(int id) throws SQLException {
+        return CityRepository.selectById(conn, id);
+    }
+    
 }
