@@ -14,7 +14,7 @@ public class CollaboratorRepository {
     private CollaboratorRepository() {}
 
     public static void insertInto(Connection conn, Collaborator collaborator) throws SQLException {
-        String sql = "INSERT INTO Collaborator (city, neighborhood, street, house_number, complement, phone1, phone2, cod_user, supervised_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Collaborator (city, neighborhood, street, house_number, complement, phone1, cod_user) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, collaborator.getCity());
@@ -23,9 +23,7 @@ public class CollaboratorRepository {
             ps.setInt(4, collaborator.getNumber());
             ps.setString(5, collaborator.getComplement());
             ps.setString(6, collaborator.getPhoneNumber1());
-            ps.setString(7, collaborator.getPhoneNumber2());
             ps.setInt(8, collaborator.getIdUser());
-            ps.setObject(9, collaborator.getSupervisedBy());
             ps.executeUpdate();
         }
     }
