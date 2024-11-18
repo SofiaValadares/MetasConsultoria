@@ -1,4 +1,4 @@
-package com.metasconsultoria.controller;
+package com.metasconsultoria.controllers;
 
 import com.metasconsultoria.entities.Project;
 import com.metasconsultoria.service.ProjectService;
@@ -34,8 +34,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateProject(@PathVariable int id, @RequestBody Project project) throws SQLException {
-        project.setIdProject(id);
+    public ResponseEntity<String> updateProject(@RequestBody Project project) throws SQLException {
         ProjectService.updateProject(project);
         return ResponseEntity.ok("Projeto atualizado com sucesso.");
     }

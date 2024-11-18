@@ -16,7 +16,7 @@ public class CollaboratorService {
 
     private CollaboratorService() {}
 
-    public static void insetCollaborator(User user, String city, String neighborhood, String street, int number, String complement, String phoneNumber1) throws SQLException {
+    public static void insertCollaborator(User user, String city, String neighborhood, String street, int number, String complement, String phoneNumber1) throws SQLException {
         if (UserRepository.selectById(conn, user.getIdUser()) == null) {
             return;
         } else if (CollaboratorRepository.selectById(conn, user.getIdUser()) != null || ClientRepository.selectById(conn, user.getIdUser()) != null) {

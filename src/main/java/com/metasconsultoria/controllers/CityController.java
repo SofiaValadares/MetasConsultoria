@@ -1,4 +1,4 @@
-package com.metasconsultoria.controller;
+package com.metasconsultoria.controllers;
 
 import com.metasconsultoria.entities.City;
 import com.metasconsultoria.service.CityService;
@@ -34,8 +34,7 @@ public class CityController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateCity(@PathVariable int id, @RequestBody City city) throws SQLException {
-        city.setIdCity(id);
+    public ResponseEntity<String> updateCity(@RequestBody City city) throws SQLException {
         CityService.updateCity(city);
         return ResponseEntity.ok("Cidade atualizada com sucesso.");
     }

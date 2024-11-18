@@ -1,4 +1,4 @@
-package com.metasconsultoria.controller;
+package com.metasconsultoria.controllers;
 
 import com.metasconsultoria.entities.User;
 import com.metasconsultoria.service.UserService;

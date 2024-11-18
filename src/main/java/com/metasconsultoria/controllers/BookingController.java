@@ -1,4 +1,4 @@
-package com.metasconsultoria.controller;
+package com.metasconsultoria.controllers;
 
 import com.metasconsultoria.entities.Booking;
 import com.metasconsultoria.service.BookingService;
@@ -34,8 +34,7 @@ public class BookingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateBooking(@PathVariable int id, @RequestBody Booking booking) throws SQLException {
-        booking.setIdBooking(id);
+    public ResponseEntity<String> updateBooking(@RequestBody Booking booking) throws SQLException {
         BookingService.updateBooking(booking);
         return ResponseEntity.ok("Reserva atualizada com sucesso.");
     }
