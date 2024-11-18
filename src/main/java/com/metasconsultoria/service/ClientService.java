@@ -33,4 +33,9 @@ public class ClientService {
 
         ClientRepository.insetInto(conn, client);
     }
+
+    public static void deletClient (Client client) throws SQLException {
+        ClientRepository.deletById(conn, client.getIdUser());
+    }
+
 }
