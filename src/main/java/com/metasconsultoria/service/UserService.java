@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class UserService {
     private static final Connection conn = ConnData.connection;
-    public static void insertUser(String name, String email, String password) throws SQLException {
+    public static User insertUser(String name, String email, String password) throws SQLException {
         User user = User.builder()
                 .name(name)
                 .email(email)
@@ -19,10 +19,12 @@ public class UserService {
                 .build();
 
         if (UserRepository.selectByEmail(conn, email) == null) {
-            return;
+            return null;
         }
 
-        UserRepository.insertInto(conn, user);
+        int id = UserRepository.insertInto(conn, user);
+
+        return user;
     }
 
     public static void deleteUser(User user) throws SQLException {

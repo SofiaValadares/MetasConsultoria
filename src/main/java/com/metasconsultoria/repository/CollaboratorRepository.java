@@ -4,6 +4,7 @@ import com.metasconsultoria.entities.Collaborator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CollaboratorRepository {
@@ -36,5 +37,25 @@ public class CollaboratorRepository {
 
             ps.executeUpdate();
         }
+    }
+
+
+    public static Collaborator selectById(Connection conn, int id) throws SQLException {
+        Collaborator collaborator = null;
+        String sql = "SELECT * FROM Collaborator WHERE cod_user = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()) {
+                    collaborator = Collaborator.builder()
+                            .idUser(rs.getInt("cod_user"))
+                            .build();
+                }
+            }
+        }
+
+        return collaborator;
     }
 }

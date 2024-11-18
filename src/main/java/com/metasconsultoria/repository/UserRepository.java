@@ -1,10 +1,8 @@
 package com.metasconsultoria.repository;
 
 import com.metasconsultoria.entities.User;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,17 +10,26 @@ public class UserRepository {
 
     private UserRepository() {}
 
-    public static void insertInto(Connection conn, User user) throws SQLException {
+    public static int insertInto(Connection conn, User user) throws SQLException {
         String sql = "INSERT INTO User (name, email, password) VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
 
             ps.executeUpdate();
+
+            // Recuperar as chaves geradas
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // Retorna o ID gerado
+                }
+            }
         }
+        return -1; // Retorna -1 caso não tenha gerado um ID
     }
+
 
     public static void deleteById(Connection conn, int userId) throws SQLException {
         String sql = "DELETE FROM User WHERE cod_user = ?";
