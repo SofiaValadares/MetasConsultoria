@@ -1,65 +1,48 @@
-package com.metasconsultoria.controllers;
+package com.metasconsultoria.controller;
 
-import com.google.gson.Gson;
 import com.metasconsultoria.entities.NextStep;
 import com.metasconsultoria.service.NextStepService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
 import java.util.List;
-import static spark.Spark.*;
 
+@RestController
+@RequestMapping("/nextsteps")
 public class NextStepController {
-    public static void registerRoutes() {
-        // Listar todos os próximos passos
-        get("/api/next-steps", (req, res) -> {
-            res.type("application/json");
-            try {
-                List<NextStep> steps = NextStepService.getAllNextSteps();
-                return new Gson().toJson(steps);
-            } catch (Exception e) {
-                res.status(500);
-                return "{\"error\":\"Erro ao buscar próximos passos: " + e.getMessage() + "\"}";
-            }
-        });
 
-        // Criar um novo próximo passo
-        post("/api/next-steps", (req, res) -> {
-            res.type("application/json");
-            try {
-                NextStep step = new Gson().fromJson(req.body(), NextStep.class);
-                NextStepService.insertNextStep(step);
-                res.status(201);
-                return "{\"message\":\"Próximo passo criado com sucesso!\"}";
-            } catch (Exception e) {
-                res.status(500);
-                return "{\"error\":\"Erro ao criar próximo passo: " + e.getMessage() + "\"}";
-            }
-        });
+    @GetMapping("/")
+    public ResponseEntity<List<NextStep>> getAllNextSteps() throws SQLException {
+        List<NextStep> nextSteps = NextStepService.getAllNextSteps();
+        return ResponseEntity.ok(nextSteps);
+    }
 
-        // Atualizar um próximo passo
-        put("/api/next-steps/:id", (req, res) -> {
-            res.type("application/json");
-            try {
-                int id = Integer.parseInt(req.params(":id"));
-                NextStep step = new Gson().fromJson(req.body(), NextStep.class);
-                step.setIdNextStep(id);
-                NextStepService.updateNextStep(step);
-                return "{\"message\":\"Próximo passo atualizado com sucesso!\"}";
-            } catch (Exception e) {
-                res.status(500);
-                return "{\"error\":\"Erro ao atualizar próximo passo: " + e.getMessage() + "\"}";
-            }
-        });
+    @GetMapping("/{id}")
+    public ResponseEntity<NextStep> getNextStepById(@PathVariable int id) throws SQLException {
+        NextStep nextStep = NextStepService.getNextStepById(id);
+        if (nextStep != null) {
+            return ResponseEntity.ok(nextStep);
+        }
+        return ResponseEntity.notFound().build();
+    }
 
-        // Deletar um próximo passo
-        delete("/api/next-steps/:id", (req, res) -> {
-            res.type("application/json");
-            try {
-                int id = Integer.parseInt(req.params(":id"));
-                NextStepService.deleteNextStep(id);
-                return "{\"message\":\"Próximo passo deletado com sucesso!\"}";
-            } catch (Exception e) {
-                res.status(500);
-                return "{\"error\":\"Erro ao deletar próximo passo: " + e.getMessage() + "\"}";
-            }
-        });
+    @PostMapping("/")
+    public ResponseEntity<String> createNextStep(@RequestBody NextStep nextStep) throws SQLException {
+        NextStepService.insertNextStep(nextStep);
+        return ResponseEntity.ok("Próximo passo criado com sucesso.");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateNextStep(@PathVariable int id, @RequestBody NextStep nextStep) throws SQLException {
+        nextStep.setIdNextStep(id);
+        NextStepService.updateNextStep(nextStep);
+        return ResponseEntity.ok("Próximo passo atualizado com sucesso.");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteNextStep(@PathVariable int id) throws SQLException {
+        NextStepService.deleteNextStep(id);
+        return ResponseEntity.ok("Próximo passo deletado com sucesso.");
     }
 }
