@@ -28,7 +28,6 @@ public class CollaboratorRepository {
             ps.setString(6, collaborator.getPhoneNumber1());
             ps.setInt(8, collaborator.getIdUser());
             ps.executeUpdate();
-            ps.close();
         }
 
         conn.close();
@@ -88,13 +87,11 @@ public class CollaboratorRepository {
                         .complement(rs.getString("complement"))
                         .phoneNumber1(rs.getString("phone1"))
                         .phoneNumber2(rs.getString("phone2"))
-                        .supervisedBy(rs.getObject("supervised_by") != null ? rs.getInt("supervised_by") : null)
+                        .supervisedBy(rs.getObject("supervised_by") != null ? rs.getInt("supervised_by") : 0)
                         .build();
                 collaborators.add(collaborator);
             }
 
-            rs.close();
-            ps.close();
         }
 
         conn.close();
@@ -121,7 +118,7 @@ public class CollaboratorRepository {
                             .complement(rs.getString("complement"))
                             .phoneNumber1(rs.getString("phone1"))
                             .phoneNumber2(rs.getString("phone2"))
-                            .supervisedBy(rs.getObject("supervised_by") != null ? rs.getInt("supervised_by") : null)
+                            .supervisedBy(rs.getObject("supervised_by") != null ? rs.getInt("supervised_by") : 0)
                             .build();
                 }
             }
