@@ -1,6 +1,7 @@
 package com.metasconsultoria.service;
 
 import com.metasconsultoria.entities.User;
+import com.metasconsultoria.repository.CollaboratorRepository;
 import com.metasconsultoria.repository.UserRepository;
 
 import java.sql.SQLException;
@@ -48,6 +49,11 @@ public class UserService {
         User user = UserRepository.selectByEmail(email);
 
         if (Objects.equals(user.getPassword(), password)) {
+
+            if (CollaboratorRepository.selectById(user.getIdUser()) == null) {
+                return null;
+            }
+
             return user;
         }
 

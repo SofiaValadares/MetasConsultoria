@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/sidebar/Sidebar';
 import Modal from 'react-modal';
-import { getAllProjects, deleteProject } from '../../service/ProjectService';
-import './ProjectList.css';
+import { getAllProjects, deleteProject, finalizeProject } from '../../service/ProjectService';
+import './ProjectsList.css';
 
 Modal.setAppElement('#root'); // Para acessibilidade
 
@@ -49,12 +49,9 @@ const ProjectList = () => {
         }
     };
 
+
     const closeModal = () => {
         setIsModalOpen(false);
-    };
-
-    const handleGoHome = () => {
-        navigate('/home');
     };
 
     return (
@@ -83,8 +80,14 @@ const ProjectList = () => {
                             <h3>{project.name}</h3>
                             <p><strong>Descrição:</strong> {project.description}</p>
                             <p><strong>Cidade:</strong> {project.city?.name || 'Não especificada'}</p>
+                            <p><strong>Data de Conclusão:</strong> {project.date ? project.date : 'Pendente'}</p>
                             <div className="actions">
-                                <button className="btn-delete" onClick={() => handleDelete(project.idProject)}>Excluir</button>
+                                <button
+                                    className="btn-delete"
+                                    onClick={() => handleDelete(project.idProject)}
+                                >
+                                    Excluir
+                                </button>
                             </div>
                         </div>
                     ))}

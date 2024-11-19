@@ -84,8 +84,6 @@ public class ProjectRepository {
                 projects.add(project);
             }
 
-            rs.close();
-            ps.close();
         }
 
         conn.close();
