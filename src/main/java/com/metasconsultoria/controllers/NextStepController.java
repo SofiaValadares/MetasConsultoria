@@ -1,5 +1,5 @@
-package com.metasconsultoria.controller;
 
+package com.metasconsultoria.controllers;
 import com.metasconsultoria.entities.NextStep;
 import com.metasconsultoria.service.NextStepService;
 import org.springframework.http.ResponseEntity;

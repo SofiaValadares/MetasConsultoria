@@ -34,8 +34,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable int id, @RequestBody User user) throws SQLException {
-        user.setIdUser(id);
+    public ResponseEntity<String> updateUser(@RequestBody User user) throws SQLException {
         UserService.updateUser(user);
         return ResponseEntity.ok("Usuário atualizado com sucesso.");
     }

@@ -34,8 +34,7 @@ public class ReportController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateReport(@PathVariable int id, @RequestBody Report report) throws SQLException {
-        report.setIdReport(id);
+    public ResponseEntity<String> updateReport(@RequestBody Report report) throws SQLException {
         ReportService.updateReport(report);
         return ResponseEntity.ok("Relatório atualizado com sucesso.");
     }

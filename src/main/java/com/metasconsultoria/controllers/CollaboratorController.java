@@ -42,7 +42,7 @@ public class CollaboratorController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCollaborator(@PathVariable int id) throws SQLException {
-        CollaboratorService.deleteCollaborator(id);
+        CollaboratorService.deleteCollaboratorById(id);
         return ResponseEntity.ok("Colaborador deletado com sucesso.");
     }
 }
