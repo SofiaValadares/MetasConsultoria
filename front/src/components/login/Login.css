@@ -8,10 +8,10 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-}
-
-/* Formulário de Login */
-.form-card {
+  }
+  
+  /* Formulário de Login */
+  .form-card {
     border: 2px solid #603d2e;
     padding: 20px;
     text-align: center;
@@ -19,30 +19,30 @@
     background-color: #f5e6da;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-}
-
-h2 {
+  }
+  
+  h2 {
     color: #603d2e;
     margin-bottom: 20px;
-}
-
-label {
+  }
+  
+  label {
     font-weight: bold;
     margin-bottom: 5px;
     display: block;
     text-align: left;
-}
-
-input {
+  }
+  
+  input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #603d2e;
     border-radius: 5px;
     box-sizing: border-box;
-}
-
-button {
+  }
+  
+  button {
     background-color: #603d2e;
     color: #f5e6da;
     padding: 10px 15px;
@@ -52,14 +52,15 @@ button {
     font-size: 16px;
     width: 100%;
     transition: background-color 0.3s;
-}
-
-button:hover {
+  }
+  
+  button:hover {
     background-color: #40291e;
-}
-
-.error-message {
+  }
+  
+  .error-message {
     color: red;
     font-size: 0.9rem;
     margin-top: 10px;
-}
+  }
+  

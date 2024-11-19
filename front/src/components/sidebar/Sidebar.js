@@ -1,7 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import './Sidebar.css';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Remove o estado de autenticação
+    localStorage.removeItem('isAuthenticated');
+    // Redireciona para a página de login
+    navigate('/login');
+  };
+
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
@@ -10,7 +20,7 @@ const Sidebar = () => {
       <nav className="sidebar-nav">
         <ul>
           <li>
-            <a href="/">
+            <a href="/dashboard">
               <span className="icon"></span> Dashboard
             </a>
           </li>
@@ -35,9 +45,10 @@ const Sidebar = () => {
             </a>
           </li>
           <li>
-            <a href="/logout">
+            {/* Botão de Logout */}
+            <button onClick={handleLogout} className="logout-button">
               <span className="icon"></span> Logout
-            </a>
+            </button>
           </li>
         </ul>
       </nav>

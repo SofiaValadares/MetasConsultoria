@@ -1,0 +1,94 @@
+/* ProjectList.css */
+
+.project-list-page {
+    display: flex;
+}
+
+.project-list-container {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    padding: 8px;
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+.project-cards {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.project-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: calc(33% - 40px);
+    box-sizing: border-box;
+}
+
+.project-card h3 {
+    margin-top: 0;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+.btn-delete {
+    background-color: #f44336;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
+
+/* Estilos para o Modal */
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+}

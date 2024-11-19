@@ -1,48 +1,49 @@
-// front/src/components/client/ClientList.js
+// src/components/project/ProjectList.js
+
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/sidebar/Sidebar';
 import Modal from 'react-modal';
-import { getAllClients, deleteClient } from '../../service/ClientService';
-import './ClientList.css';
+import { getAllProjects, deleteProject } from '../../service/ProjectService';
+import './ProjectList.css';
 
 Modal.setAppElement('#root'); // Para acessibilidade
 
-const ClientList = () => {
-    const [clients, setClients] = useState([]);
+const ProjectList = () => {
+    const [projects, setProjects] = useState([]);
     const [filter, setFilter] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchClients = async () => {
+        const fetchProjects = async () => {
             try {
-                const clientsData = await getAllClients();
-                setClients(clientsData);
+                const projectsData = await getAllProjects();
+                setProjects(projectsData);
             } catch (error) {
-                setModalMessage('Erro ao carregar os clientes.');
+                setModalMessage('Erro ao carregar os projetos.');
                 setIsModalOpen(true);
             }
         };
 
-        fetchClients();
+        fetchProjects();
     }, []);
 
-    // Filtra os clientes com base no nome
-    const filteredClients = clients.filter(client =>
-        client.user.name.toLowerCase().includes(filter.toLowerCase())
+    // Filtra os projetos com base no nome
+    const filteredProjects = projects.filter(project =>
+        project.name.toLowerCase().includes(filter.toLowerCase())
     );
 
     const handleDelete = async (id) => {
-        if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
+        if (window.confirm('Tem certeza que deseja excluir este projeto?')) {
             try {
-                await deleteClient(id);
-                setClients(clients.filter(client => client.idClient !== id)); // Ajuste conforme o identificador correto
-                setModalMessage('Cliente excluído com sucesso!');
+                await deleteProject(id);
+                setProjects(projects.filter(project => project.idProject !== id));
+                setModalMessage('Projeto excluído com sucesso!');
                 setIsModalOpen(true);
             } catch (error) {
-                setModalMessage('Não é possível excluir o cliente no momento.');
+                setModalMessage('Não é possível excluir o projeto no momento.');
                 setIsModalOpen(true);
             }
         }
@@ -57,9 +58,9 @@ const ClientList = () => {
     };
 
     return (
-        <div className="client-list-page">
+        <div className="project-list-page">
             <Sidebar />
-            <div className="client-list-container">
+            <div className="project-list-container">
                 <div className="header">
                     <div className="header-buttons">
                         <div className="search-bar">
@@ -70,20 +71,20 @@ const ClientList = () => {
                                 onChange={(e) => setFilter(e.target.value)}
                             />
                         </div>
-                        <Link to="/clients/novo">
-                            <button className="btn-primary">Criar Novo Cliente</button>
+                        <Link to="/projects/novo">
+                            <button className="btn-primary">Criar Novo Projeto</button>
                         </Link>
                     </div>
                 </div>
 
-                <div className="client-cards">
-                    {filteredClients.map(client => (
-                        <div className="client-card" key={client.idClient}>
-                            <h3>{client.user.name}</h3>
-                            <p><strong>Email:</strong> {client.user.email}</p>
-                            <p><strong>Cidade:</strong> {client.city.name}</p>
+                <div className="project-cards">
+                    {filteredProjects.map(project => (
+                        <div className="project-card" key={project.idProject}>
+                            <h3>{project.name}</h3>
+                            <p><strong>Descrição:</strong> {project.description}</p>
+                            <p><strong>Cidade:</strong> {project.city?.name || 'Não especificada'}</p>
                             <div className="actions">
-                                <button className="btn-delete" onClick={() => handleDelete(client.user.idUser)}>Excluir</button>
+                                <button className="btn-delete" onClick={() => handleDelete(project.idProject)}>Excluir</button>
                             </div>
                         </div>
                     ))}
@@ -106,4 +107,4 @@ const ClientList = () => {
     );
 };
 
-export default ClientList;
+export default ProjectList;

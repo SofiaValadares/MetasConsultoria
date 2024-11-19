@@ -1,33 +1,87 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/sidebar/Sidebar";
+import Login from "./components/login/Login"; // Importe o componente de Login
 import Dashboard from "./components/dashboard/Dashboard";
 import ClientList from "./components/client/ClientList";
 import ClientForm from "./components/client/ClientForm";
+import ProjectsList from "./components/projects/ProjectsList";
+
+
+// Componente ProtectedRoute
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
+};
 
 const App = () => {
-    return (
-        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-            <div className="app-container">
-                <Sidebar />
-                <div className="content">
-                    <Routes>
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
-                        
+  return (
+    <Router>
+      <div className="app-container">
+        {/* Exibe o Sidebar apenas se o usuário estiver autenticado */}
+        {isAuthenticated && <Sidebar />}
+        <div className="content">
+          <Routes>
+            {/* Rota para a página de Login */}
+            <Route path="/login" element={<Login />} />
 
-                        {/* Rota para a Dashboard */}
-                        <Route path="/" element={<Dashboard />} />
+            {/* Rotas protegidas */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
 
-                        {/* Rota para a tela de clientes */}
-                        <Route path="/clients" element={<ClientList />} />
-                        
-                        <Route path="/clients/novo" element={<ClientForm />} />
+            <Route
+              path="/clients"
+              element={
+                <ProtectedRoute>
+                  <ClientList />
+                </ProtectedRoute>
+              }
+            />
 
-                    </Routes>    
-                </div>
-            </div>
-        </Router>
-    );
+            <Route
+              path="/clients/novo"
+              element={
+                <ProtectedRoute>
+                  <ClientForm />
+                </ProtectedRoute>
+              }
+            />
+
+              <Route
+                  path="/projects"
+                  element={
+                      <ProtectedRoute>
+                          <ProjectsList />
+                      </ProtectedRoute>
+                  }
+              />
+
+
+
+            {/* Rota padrão que redireciona com base na autenticação */}
+            <Route
+              path="/"
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/dashboard" replace />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
+            />
+          </Routes>
+        </div>
+      </div>
+    </Router>
+  );
 };
 
 export default App;
