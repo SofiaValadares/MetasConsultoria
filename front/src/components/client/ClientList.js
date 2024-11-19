@@ -87,7 +87,7 @@ const ClientList = () => {
                                 <Link to={`/clients/editar/${client.idClient}`}>
                                     <button className="btn-edit">Editar</button>
                                 </Link>
-                                <button className="btn-delete" onClick={() => handleDelete(client.idClient)}>Excluir</button>
+                                <button className="btn-delete" onClick={() => handleDelete(client.user.idUser)}>Excluir</button>
                             </div>
                         </div>
                     ))}

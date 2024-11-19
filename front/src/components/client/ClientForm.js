@@ -85,6 +85,7 @@ const ClientForm = () => {
                 await updateClient(id, client);
                 setModalMessage('Cliente atualizado com sucesso!');
             } else {
+                console.log("TO AQUI");
                 await addClient(client);
                 setModalMessage('Cliente criado com sucesso!');
                 // Redireciona para a lista de clientes após criar apenas após fechar o modal

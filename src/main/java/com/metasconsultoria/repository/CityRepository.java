@@ -17,7 +17,7 @@ public class CityRepository {
     public static void insetInto(City city) throws SQLException {
         Connection conn = ConnectDatabase.getConnection();
         
-        String sql = "INSERT INTO User (name, state) VALUES (?, ?)";
+        String sql = "INSERT INTO City (name, state) VALUES (?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, city.getName());
@@ -84,8 +84,6 @@ public class CityRepository {
                 cities.add(city);
             }
 
-            rs.close();
-            ps.close();
         }
 
         conn.close();
@@ -110,10 +108,8 @@ public class CityRepository {
                             .build();
                 }
 
-                rs.close();
             }
 
-            ps.close();
         }
 
         conn.close();

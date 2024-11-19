@@ -15,7 +15,6 @@ public class ClientRepository {
     private ClientRepository() {}
 
     public static void insetInto(Client client) throws SQLException {
-        Connection conn = ConnectDatabase.getConnection();
 
         String sql = "INSERT INTO Client (cod_user, fk_city) VALUES (?, ?)";
 
@@ -28,14 +27,12 @@ public class ClientRepository {
         }
 
         String cityName = client.getCity().getName();
-        client.getCity().setState("No State");
         String state = client.getCity().getState();
-        
 
         CityRepository.insetInto(client.getCity());
         client.setCity(CityRepository.selectCityByNameAndState(cityName, state));
-       
 
+        Connection conn = ConnectDatabase.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, client.getUser().getIdUser());
             ps.setInt(2, client.getCity().getIdCity());
