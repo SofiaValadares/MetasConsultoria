@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Client  {
-    private int idUser;
-    private int idCity;
+    private User user;
+    private City city;
 }

@@ -1,6 +1,7 @@
 package com.metasconsultoria.repository;
 
 import com.metasconsultoria.database.ConnectDatabase;
+import com.metasconsultoria.entities.DashboardEntities;
 import com.metasconsultoria.entities.Project;
 
 import java.sql.*;
@@ -140,4 +141,62 @@ public class ProjectRepository {
         conn.close();
         return count;
     }
+
+    public static List<Project> selectFinishList() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
+        List<Project> projects = new ArrayList<>();
+        String sql = "SELECT * FROM Project WHERE date IS NOT NULL ORDER BY date";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Project project = Project.builder()
+                        .idProject(rs.getInt("cod_project"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .publicProject(rs.getBoolean("public"))
+                        .date(rs.getDate("date"))
+                        .idCity(rs.getInt("fk_city"))
+                        .build();
+
+                projects.add(project);
+            }
+        }
+
+        return projects;
+    }
+
+    public static List<DashboardEntities.RevenueData> selectMonthlyRevenue() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
+        List<DashboardEntities.RevenueData> revenues = new ArrayList<>();
+        String sql = """
+        SELECT 
+            DATE_FORMAT(date, '%Y-%m-01') AS month, 
+            SUM(money) AS total_revenue
+        FROM Project
+        WHERE date IS NOT NULL
+        GROUP BY DATE_FORMAT(date, '%Y-%m-01')
+        ORDER BY DATE_FORMAT(date, '%Y-%m-01');
+    """;
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                DashboardEntities.RevenueData revenueData = new DashboardEntities.RevenueData(
+                        rs.getString("month"),     // Mês no formato "YYYY-MM-01"
+                        rs.getDouble("total_revenue") // Receita total do mês
+                );
+
+                revenues.add(revenueData);
+            }
+        }
+
+        return revenues;
+    }
+
+
 }

@@ -17,17 +17,8 @@ public class DashboardEntities {
     private int ongoingProjects; // Número de projetos em andamento
     private int activeEmployees; // Número de colaboradores ativos
     private List<RevenueData> monthlyRevenue; // Dados de receita do mês
-    private List<ProjectEntities> newProjectsThisMonth; // Lista de projetos novos do mês
+    private List<Project> newProjectsThisMonth;
 
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ProjectEntities {
-        private String name; // Nome do projeto
-        private String municipality; // Município onde o projeto está sendo realizado
-        private String startDate; // Data de início do projeto
-    }
 
     @Getter
     @Setter

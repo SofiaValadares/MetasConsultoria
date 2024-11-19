@@ -13,7 +13,7 @@ Para testar o repositório localmente, siga as instruções detalhadas no arquiv
 - **Linguagens**: Java 17, MySQL, JavaScript, HTML, CSS
 - **Frameworks**: React
 - **Conexão com Banco de Dados**: JDBC
-- **Outras Ferramentas**: Docker, Maven
+- **Outras Ferramentas**: Docker, Maven, Node 18.16.0
 
 ## PRÉ-REQUISITOS
 1. Instalar o [Java](https://www.oracle.com/br/java/).

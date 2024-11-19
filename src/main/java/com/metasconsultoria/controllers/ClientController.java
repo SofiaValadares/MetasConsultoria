@@ -29,13 +29,12 @@ public class ClientController {
 
     @PostMapping("/")
     public ResponseEntity<String> createClient(@RequestBody Client client) throws SQLException {
-        ClientService.insertClient(client.getIdUser(), client.getIdCity());
+        ClientService.insertClient(client.getUser(), client.getCity());
         return ResponseEntity.ok("Cliente criado com sucesso.");
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateClient(@PathVariable int id, @RequestBody Client client) throws SQLException {
-        client.setIdUser(id);
         ClientService.updateClient(client);
         return ResponseEntity.ok("Cliente atualizado com sucesso.");
     }

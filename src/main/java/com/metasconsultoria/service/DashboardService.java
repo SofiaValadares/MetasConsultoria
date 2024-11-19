@@ -18,8 +18,9 @@ public class DashboardService {
         dashboardData.setTotalMunicipalities(CityRepository.countData());
         dashboardData.setOngoingProjects(ProjectRepository.countData());
         dashboardData.setActiveEmployees(CollaboratorRepository.countData());
+        dashboardData.setNewProjectsThisMonth(ProjectRepository.selectFinishList());
+        dashboardData.setMonthlyRevenue(ProjectRepository.selectMonthlyRevenue());
 
         return dashboardData;
     }
 }
-

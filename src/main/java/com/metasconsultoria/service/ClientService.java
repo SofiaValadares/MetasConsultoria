@@ -1,18 +1,21 @@
 package com.metasconsultoria.service;
 
+import com.metasconsultoria.entities.City;
 import com.metasconsultoria.entities.Client;
+import com.metasconsultoria.entities.User;
 import com.metasconsultoria.repository.ClientRepository;
+import com.metasconsultoria.repository.UserRepository;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class ClientService {
 
-    public static void insertClient(int idUser, int idCity) throws SQLException {
-        
+    public static void insertClient(User user, City city) throws SQLException {
+
         Client client = Client.builder()
-                .idUser(idUser)
-                .idCity(idCity)
+                .user(user)
+                .city(city)
                 .build();
 
         ClientRepository.insetInto(client);

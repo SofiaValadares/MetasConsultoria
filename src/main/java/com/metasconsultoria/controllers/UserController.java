@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping("/")
     public ResponseEntity<String> createUser(@RequestBody User user) throws SQLException {
-        UserService.insertUser(user.getName(), user.getEmail(), user.getPassword());
+        UserService.insertUser(user);
         return ResponseEntity.ok("Usuário criado com sucesso.");
     }
 
@@ -48,4 +48,19 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody User loginRequest) throws SQLException {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
+
+        User authenticatedUser = UserService.login(email, password);
+
+        if (authenticatedUser != null) {
+            return ResponseEntity.ok("Login bem-sucedido. Bem-vindo, " + authenticatedUser.getName() + "!");
+        }
+
+        return ResponseEntity.status(401).body("Email ou senha inválidos.");
+    }
 }
+

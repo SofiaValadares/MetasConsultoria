@@ -9,15 +9,9 @@ import java.util.Objects;
 
 public class UserService {
 
-    public static void insertUser(String name, String email, String password) throws SQLException {
-        
-        User user = User.builder()
-                .name(name)
-                .email(email)
-                .password(password)
-                .build();
+    public static void insertUser(User user) throws SQLException {
 
-        if (UserRepository.selectByEmail(email) == null) {
+        if (UserRepository.selectByEmail(user.getEmail()) != null) {
             return;
         }
 

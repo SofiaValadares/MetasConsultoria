@@ -1,7 +1,13 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client'; // Importa createRoot
+import ReactDOM from 'react-dom/client'; // Atualizado para 'react-dom/client'
 import App from './App';
+import './index.css';
 
-const container = document.getElementById('root');
-const root = createRoot(container); // Cria a raiz
-root.render(<App />); // Renderiza o aplicativo
+// Removido o import e atribuição de 'process'
+
+const root = ReactDOM.createRoot(document.getElementById('root')); // Usando createRoot
+root.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);

@@ -22,8 +22,6 @@ public class UserRepository {
             ps.setString(3, user.getPassword());
 
             ps.executeUpdate();
-
-            ps.close();
         }
 
         conn.close();

@@ -12,7 +12,6 @@ import java.util.Map;
 public class MetasConsultoriaApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
-        // Configurar manualmente propriedades do Spring Boot
         SpringApplication app = new SpringApplication(MetasConsultoriaApplication.class);
         app.setDefaultProperties(Map.of(
                 "server.port", "8080"
@@ -25,7 +24,7 @@ public class MetasConsultoriaApplication implements CommandLineRunner {
         System.out.println("Iniciando a aplicação...");
 
         try (Connection conn = ConnectDatabase.getConnection()) {
-            if (conn != null && conn.isValid(5)) { // Timeout de 5 segundos
+            if (conn != null && conn.isValid(5)) {
                 System.out.println("Banco de dados conectado com sucesso e pronto para uso!");
             } else {
                 System.out.println("Falha ao conectar ou validar o banco de dados.");

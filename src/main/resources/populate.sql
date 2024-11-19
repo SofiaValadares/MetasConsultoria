@@ -2,10 +2,10 @@ CREATE DATABASE IF NOT EXISTS DatabaseMetas;
 USE DatabaseMetas;
 
 CREATE TABLE User (
-                      cod_user 		INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                      name 			VARCHAR(40) NOT NULL,
-                      email 		VARCHAR(31) NOT NULL UNIQUE,
-                      password 		VARCHAR(16) NOT NULL
+                      cod_user      INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                      name          VARCHAR(40) NOT NULL,
+                      email         VARCHAR(31) NOT NULL UNIQUE,
+                      password      VARCHAR(16) NOT NULL
 );
 
 CREATE TABLE Collaborator (
@@ -21,111 +21,110 @@ CREATE TABLE Collaborator (
 
                               PRIMARY KEY (cod_user),
                               CONSTRAINT collaborator_fk_user
-                                  FOREIGN KEY (cod_user) REFERENCES User(cod_user),
+                                  FOREIGN KEY (cod_user) REFERENCES User(cod_user) ON DELETE CASCADE,
 
                               supervised_by   INTEGER,
 
                               CONSTRAINT fk_supervisor
-                                  FOREIGN KEY (supervised_by) REFERENCES Collaborator(cod_user)
+                                  FOREIGN KEY (supervised_by) REFERENCES Collaborator(cod_user) ON DELETE CASCADE
 );
 
 CREATE TABLE City (
-                           cod_city                INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                           name                    VARCHAR(100) NOT NULL,
-                           state                   VARCHAR(100) NOT NULL
+                      cod_city    INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                      name        VARCHAR(100) NOT NULL,
+                      state       VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Client (
-                        cod_user        INTEGER NOT NULL,
-                        fk_city         INTEGER NOT NULL,
+                        cod_user    INTEGER NOT NULL,
+                        fk_city     INTEGER NOT NULL,
 
                         PRIMARY KEY (cod_user),
                         CONSTRAINT client_fk_user
-                            FOREIGN KEY (cod_user) REFERENCES User(cod_user),
+                            FOREIGN KEY (cod_user) REFERENCES User(cod_user) ON DELETE CASCADE,
 
                         CONSTRAINT client_fk_city
-                            FOREIGN KEY (fk_city) REFERENCES City(cod_city)
+                            FOREIGN KEY (fk_city) REFERENCES City(cod_city) ON DELETE CASCADE
 );
 
 CREATE TABLE Project (
-                         cod_project        INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                         name               VARCHAR(255) NOT NULL,
-                         description        VARCHAR(1500),
-                         public             BIT DEFAULT 0,
-                         date               DATE,
+                         cod_project    INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                         name           VARCHAR(255) NOT NULL,
+                         description    VARCHAR(1500),
+                         public         BIT DEFAULT 0,
+                         date           DATE,
+                         money          DOUBLE,
 
-                         fk_city            INTEGER NOT NULL,
+                         fk_city        INTEGER NOT NULL,
 
                          CONSTRAINT project_fk_city
-                             FOREIGN KEY (fk_city) REFERENCES City(cod_city)
+                             FOREIGN KEY (fk_city) REFERENCES City(cod_city) ON DELETE CASCADE
 );
 
 CREATE TABLE R_Collaborator_Client_Project (
-                                                fk_collaborator     INTEGER NOT NULL,
-                                                fk_client           INTEGER NOT NULL,
-                                                fk_project          INTEGER NOT NULL,
+                                               fk_collaborator     INTEGER NOT NULL,
+                                               fk_client           INTEGER NOT NULL,
+                                               fk_project          INTEGER NOT NULL,
 
-                                                PRIMARY KEY (fk_collaborator, fk_client, fk_project),
+                                               PRIMARY KEY (fk_collaborator, fk_client, fk_project),
 
-                                                CONSTRAINT r_collaborator_client_project_fk_collaborator
-                                                    FOREIGN KEY (fk_collaborator) REFERENCES Collaborator(cod_user),
+                                               CONSTRAINT r_collaborator_client_project_fk_collaborator
+                                                   FOREIGN KEY (fk_collaborator) REFERENCES Collaborator(cod_user) ON DELETE CASCADE,
 
-                                                CONSTRAINT r_collaborator_client_project_fk_client
-                                                    FOREIGN KEY (fk_client) REFERENCES Client(cod_user),
+                                               CONSTRAINT r_collaborator_client_project_fk_client
+                                                   FOREIGN KEY (fk_client) REFERENCES Client(cod_user) ON DELETE CASCADE,
 
-                                                CONSTRAINT r_collaborator_client_project_fk_project
-                                                    FOREIGN KEY (fk_project) REFERENCES Project(cod_project)
+                                               CONSTRAINT r_collaborator_client_project_fk_project
+                                                   FOREIGN KEY (fk_project) REFERENCES Project(cod_project) ON DELETE CASCADE
 );
 
 CREATE TABLE Next_Steps (
-    next_steps_pk           INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    next_steps              VARCHAR(255) NOT NULL,
-    fk_project INTEGER NOT NULL,
+                            next_steps_pk   INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                            next_steps      VARCHAR(255) NOT NULL,
+                            fk_project      INTEGER NOT NULL,
 
-    CONSTRAINT next_steps_fk_project
-        FOREIGN KEY (fk_project) REFERENCES Project(cod_project)
+                            CONSTRAINT next_steps_fk_project
+                                FOREIGN KEY (fk_project) REFERENCES Project(cod_project) ON DELETE CASCADE
 );
 
 CREATE TABLE Reservation (
-    reservation_id             INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    start_time                 TIME NOT NULL,
-    end_time                   TIME NOT NULL,
-    day                        DATE NOT NULL,
+                             reservation_id             INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                             start_time                 TIME NOT NULL,
+                             end_time                   TIME NOT NULL,
+                             day                        DATE NOT NULL,
 
-    fk_collaborator_cod_user    INTEGER NOT NULL,
-    fk_client_cod_user        INTEGER,
+                             fk_collaborator_cod_user   INTEGER NOT NULL,
+                             fk_client_cod_user         INTEGER,
 
-    CONSTRAINT fk_reservation_collaborator
-        FOREIGN KEY (fk_collaborator_cod_user) REFERENCES Collaborator(cod_user),
-    
-    CONSTRAINT fk_reservation_client
-        FOREIGN KEY (fk_client_cod_user) REFERENCES Client(cod_user)
+                             CONSTRAINT fk_reservation_collaborator
+                                 FOREIGN KEY (fk_collaborator_cod_user) REFERENCES Collaborator(cod_user) ON DELETE CASCADE,
+
+                             CONSTRAINT fk_reservation_client
+                                 FOREIGN KEY (fk_client_cod_user) REFERENCES Client(cod_user) ON DELETE CASCADE
 );
 
 CREATE TABLE Report (
-    cod_report      INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    report_date     DATE NOT NULL,
-    description     VARCHAR(255) NOT NULL
+                        cod_report      INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                        report_date     DATE NOT NULL,
+                        description     VARCHAR(255) NOT NULL
 );
-
 
 CREATE TABLE RCollaborator_Project_Report (
-    fk_collaborator_user    INTEGER NOT NULL,
-    fk_project              INTEGER NOT NULL,
-    fk_report         INTEGER NOT NULL,
+                                              fk_collaborator_user    INTEGER NOT NULL,
+                                              fk_project              INTEGER NOT NULL,
+                                              fk_report               INTEGER NOT NULL,
 
-    PRIMARY KEY (fk_collaborator_user, fk_project, fk_report),
+                                              PRIMARY KEY (fk_collaborator_user, fk_project, fk_report),
 
-    CONSTRAINT fk_cpr_collaborator
-        FOREIGN KEY (fk_collaborator_user) REFERENCES Collaborator(cod_user),
-    
-    CONSTRAINT fk_cpr_project
-        FOREIGN KEY (fk_project) REFERENCES Project(cod_project),
-    
-    CONSTRAINT fk_cpr_report
-        FOREIGN KEY (fk_report) REFERENCES Report(cod_report)
+                                              CONSTRAINT fk_cpr_collaborator
+                                                  FOREIGN KEY (fk_collaborator_user) REFERENCES Collaborator(cod_user) ON DELETE CASCADE,
+
+                                              CONSTRAINT fk_cpr_project
+                                                  FOREIGN KEY (fk_project) REFERENCES Project(cod_project) ON DELETE CASCADE,
+
+                                              CONSTRAINT fk_cpr_report
+                                                  FOREIGN KEY (fk_report) REFERENCES Report(cod_report) ON DELETE CASCADE
 );
-
 
 CREATE TRIGGER validate_password
     BEFORE UPDATE ON User
@@ -147,10 +146,6 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A senha deve conter ao menos um número.';
     END IF;
 END;
-
-
-
-
 
 INSERT INTO User (name, email, password) VALUES
                                              ('Andresa', 'andresa@exemplo.com', 'Oi12345!'),
@@ -174,79 +169,80 @@ INSERT INTO User (name, email, password) VALUES
                                              ('Larissa', 'larissa@exemplo.com', 'L@riss@2023'),
                                              ('Thiago', 'thiago@exemplo.com', 'Thi#Thi456!');
 
-INSERT INTO Collaborator(city, neighborhood, street, house_number, complement, phone1, phone2, cod_user, supervised_by) VALUES
-                                                                                                                            ('Recife', 'Boa Viagem', 'Avenida Conselheiro Aguiar', 1234, 'Apt 301', '81912345678', '81987654321', 1, null),
-                                                                                                                            ('Olinda', 'Casa Caiada', 'Rua do Sol', 56, 'Próximo ao Shopping Patteo', '81923456789', '81976543210', 2, 1),
-                                                                                                                            ('Caruaru', 'Maurício de Nassau', 'Avenida Agamenon Magalhães', 987, null, '81934567890', '81965432109', 3, 1),
-                                                                                                                            ('Recife', 'Boa Vista', 'Rua do Hospício', 234, 'Sala 101', '81945678901', '81954321098', 4, 1),
-                                                                                                                            ('Petrolina', 'Centro', 'Rua Pacífico da Luz', 789, 'Ed. Petrolina', '81956789012', '81943210987', 5, 1);
+INSERT INTO Collaborator (city, neighborhood, street, house_number, complement, phone1, phone2, cod_user, supervised_by) VALUES
+                                                                                                                             ('Recife', 'Boa Viagem', 'Avenida Conselheiro Aguiar', 1234, 'Apt 301', '81912345678', '81987654321', 1, NULL),
+                                                                                                                             ('Olinda', 'Casa Caiada', 'Rua do Sol', 56, 'Próximo ao Shopping Patteo', '81923456789', '81976543210', 2, 1),
+                                                                                                                             ('Caruaru', 'Maurício de Nassau', 'Avenida Agamenon Magalhães', 987, NULL, '81934567890', '81965432109', 3, 1),
+                                                                                                                             ('Recife', 'Boa Vista', 'Rua do Hospício', 234, 'Sala 101', '81945678901', '81954321098', 4, 1),
+                                                                                                                             ('Petrolina', 'Centro', 'Rua Pacífico da Luz', 789, 'Ed. Petrolina', '81956789012', '81943210987', 5, 1);
 
 INSERT INTO City (name, state) VALUES
-                                         ('Recife', 'Pernambuco'),
-                                         ('Olinda', 'Pernambuco'),
-                                         ('Caruaru', 'Pernambuco'),
-                                         ('Petrolina', 'Pernambuco'),
-                                         ('João Pessoa', 'Paraíba'),
-                                         ('Campina Grande', 'Paraíba'),
-                                         ('Fortaleza', 'Ceará'),
-                                         ('Natal', 'Rio Grande do Norte'),
-                                         ('Maceió', 'Alagoas'),
-                                         ('Salvador', 'Bahia');
-
+                                   ('Recife', 'Pernambuco'),
+                                   ('Olinda', 'Pernambuco'),
+                                   ('Caruaru', 'Pernambuco'),
+                                   ('Petrolina', 'Pernambuco'),
+                                   ('João Pessoa', 'Paraíba'),
+                                   ('Campina Grande', 'Paraíba'),
+                                   ('Fortaleza', 'Ceará'),
+                                   ('Natal', 'Rio Grande do Norte'),
+                                   ('Maceió', 'Alagoas'),
+                                   ('Salvador', 'Bahia');
 
 INSERT INTO Client (cod_user, fk_city) VALUES
-                                           (1, 1),   
-                                           (2, 2),   
-                                           (3, 3),   
-                                           (4, 4),   
-                                           (5, 5),   
-                                           (6, 6),   
-                                           (7, 7),   
-                                           (8, 8),   
-                                           (9, 9),   
+                                           (1, 1),
+                                           (2, 2),
+                                           (3, 3),
+                                           (4, 4),
+                                           (5, 5),
+                                           (6, 6),
+                                           (7, 7),
+                                           (8, 8),
+                                           (9, 9),
                                            (10, 10);
 
-INSERT INTO Project (name, description, public, fk_city) VALUES
-('Projeto de Infraestrutura Ferroviária', 'Construção de uma nova linha ferroviária para transporte de carga.', 0, 1),
-('Plano de Despoluição de Rios', 'Desenvolvimento de medidas para a limpeza de rios poluídos.', 0, 2),
-('Iniciativa de Segurança Rodoviária', 'Melhorias em sinalização e monitoramento de vias para reduzir acidentes.', 0, 3),
-('Projeto de Digitalização de Documentos Públicos', 'Conversão de arquivos físicos em digitais para acesso remoto.', 0, 4),
-('Programa de Modernização Portuária', 'Expansão e modernização de portos para aumento da capacidade.', 0, 5),
-('Desenvolvimento de Ferramentas de Governança', 'Criação de software para gerenciamento eficiente de recursos públicos.', 0, 6),
-('Estudo de Impacto Ambiental para Construção', 'Análises detalhadas para minimizar o impacto ambiental.', 0, 7),
-('Reforma de Políticas de Subsídio Habitacional', 'Avaliação e reformulação de programas de subsídio habitacional.', 0, 8),
-('Centro de Estudos Urbanos', 'Criação de um centro de pesquisa para desenvolvimento urbano.', 0, 9),
-('Plano de Eficiência Hídrica', 'Instalação de sistemas de coleta de água de chuva e economia hídrica.', 0, 10),
-('Projeto de Expansão de Aeroportos', 'Ampliação de pistas e terminais em aeroportos estratégicos.', 0, 1),
-('Iniciativa de Integração Regional', 'Desenvolvimento de corredores de transporte entre cidades próximas.', 0, 2),
-('Plano de Controle de Poluição Sonora', 'Implementação de medidas para reduzir ruídos urbanos.', 0, 3),
-('Desenvolvimento de Zonas Francas', 'Criação de áreas livres de impostos para estímulo econômico.', 0, 4),
-('Reestruturação de Hospitais Públicos', 'Melhoria na infraestrutura e equipamentos médicos.', 0, 5),
-('Projeto de Renovação da Malha Viária', 'Reforma de estradas e avenidas principais.', 0, 6),
-('Projeto de Modernização de Sistemas de Iluminação', 'Substituição de sistemas antigos por tecnologia LED.', 0, 7),
-('Plano de Expansão de Ensino Superior', 'Construção de novas universidades e campus.', 0, 8),
-('Desenvolvimento de Centros de Pesquisa Científica', 'Criação de novos centros de inovação e pesquisa.', 0, 9),
-('Projeto de Reurbanização de Bairros', 'Revitalização de áreas residenciais com novos serviços.', 0, 10),
-('Plano de Melhoria de Redes de Saneamento', 'Expansão de sistemas de esgoto para áreas não atendidas.', 0, 1),
-('Iniciativa de Conectividade Rural', 'Instalação de redes de internet em áreas rurais.', 0, 2),
-('Projeto de Fortalecimento de Comunidades', 'Criação de programas de apoio a comunidades locais.', 0, 3),
-('Projeto de Gerenciamento de Crises Urbanas', 'Planejamento de estratégias de resposta rápida para desastres.', 0, 4),
-('Desenvolvimento de Zona de Proteção Ambiental', 'Criação de novas áreas de preservação natural.', 0, 5),
-('Plano de Segurança Digital para Órgãos Públicos', 'Implementação de medidas de cibersegurança.', 0, 6),
-('Projeto de Ampliação de Redes de Transporte Subterrâneo', 'Construção de novas linhas de metrô.', 0, 7),
-('Plano de Conservação de Estruturas Históricas', 'Preservação e restauração de patrimônios culturais.', 0, 8),
-('Projeto de Requalificação de Áreas Industriais', 'Transformação de antigas zonas industriais em espaços modernos.', 0, 9),
-('Plano de Incentivo à Indústria Sustentável', 'Criação de políticas para atrair indústrias verdes.', 0, 10),
-('Programa de Educação Inclusiva', 'Criação de escolas e programas adaptados para necessidades especiais.', 1, 1),
-('Projeto de Acessibilidade em Espaços Públicos', 'Melhorias em rampas, elevadores e sinalizações.', 1, 2),
-('Plano de Promoção de Esportes Amadores', 'Incentivo a práticas esportivas em bairros.', 1, 3),
-('Projeto de Hortas Comunitárias', 'Criação de hortas em espaços urbanos para a comunidade.', 1, 4),
-('Campanha de Conscientização sobre Reciclagem', 'Distribuição de materiais educativos sobre reciclagem.', 1, 5),
-('Projeto de Preservação de Fauna e Flora', 'Programas de proteção a espécies nativas.', 1, 1),
-('Aprimoramento de Serviços de Transporte', 'Melhoria na qualidade e frequência de transporte público.', 1, 2),
-('Projeto de Segurança em Comunidades', 'Patrulhas comunitárias e instalação de câmeras de segurança.', 1, 3),
-('Campanha de Prevenção a Doenças', 'Distribuição de materiais educativos sobre higiene e saúde.', 1, 4),
-('Projeto de Sustentabilidade Energética', 'Uso de fontes de energia renovável em espaços públicos.', 1, 5);
+INSERT INTO Project (name, description, public, date, fk_city, money) VALUES
+                                                                          -- Projetos com data preenchida
+                                                                          ('Projeto 1', 'Descrição do projeto 1.', 0, '2024-01-15', 1, 500.0),
+                                                                          ('Projeto 2', 'Descrição do projeto 2.', 0, '2024-02-20', 2, 200.0),
+                                                                          ('Projeto 3', 'Descrição do projeto 3.', 0, '2024-03-05', 3, 50.0),
+                                                                          ('Projeto 4', 'Descrição do projeto 4.', 0, '2024-04-10', 4, 10.0),
+                                                                          ('Projeto 5', 'Descrição do projeto 5.', 0, '2024-05-25', 5, 1000.0),
+                                                                          ('Projeto 6', 'Descrição do projeto 6.', 0, '2024-06-15', 6, 5.0),
+                                                                          ('Projeto 7', 'Descrição do projeto 7.', 0, '2024-07-20', 7, 1.5),
+                                                                          ('Projeto 8', 'Descrição do projeto 8.', 0, '2024-08-10', 8, 300.0),
+                                                                          ('Projeto 9', 'Descrição do projeto 9.', 0, '2024-09-05', 9, 100.0),
+                                                                          ('Projeto 10', 'Descrição do projeto 10.', 1, '2024-10-15', 10, 20.0),
+                                                                          ('Projeto 11', 'Descrição do projeto 11.', 1, '2024-11-10', 1, 15.0),
+                                                                          ('Projeto 12', 'Descrição do projeto 12.', 1, '2024-12-05', 2, 2.0),
+                                                                          ('Projeto 13', 'Descrição do projeto 13.', 1, '2025-01-15', 3, 25.0),
+                                                                          ('Projeto 14', 'Descrição do projeto 14.', 0, '2025-02-25', 4, 600.0),
+                                                                          ('Projeto 15', 'Descrição do projeto 15.', 0, '2025-03-30', 5, 750.0),
+                                                                          ('Projeto 16', 'Descrição do projeto 16.', 1, '2025-04-15', 6, 90.0),
+                                                                          ('Projeto 17', 'Descrição do projeto 17.', 1, '2025-05-10', 7, 45.0),
+                                                                          ('Projeto 18', 'Descrição do projeto 18.', 1, '2025-06-20', 8, 10.0),
+                                                                          ('Projeto 19', 'Descrição do projeto 19.', 1, '2025-07-15', 9, 300.0),
+                                                                          ('Projeto 20', 'Descrição do projeto 20.', 1, '2025-08-25', 10, 50.0),
+                                                                          -- Projetos com data como NULL
+                                                                          ('Projeto 21', 'Descrição do projeto 21.', 0, NULL, 1, 5.0),
+                                                                          ('Projeto 22', 'Descrição do projeto 22.', 0, NULL, 2, 2.0),
+                                                                          ('Projeto 23', 'Descrição do projeto 23.', 0, NULL, 3, 8.0),
+                                                                          ('Projeto 24', 'Descrição do projeto 24.', 0, NULL, 4, 20.0),
+                                                                          ('Projeto 25', 'Descrição do projeto 25.', 0, NULL, 5, 15.0),
+                                                                          ('Projeto 26', 'Descrição do projeto 26.', 0, NULL, 6, 30.0),
+                                                                          ('Projeto 27', 'Descrição do projeto 27.', 0, NULL, 7, 40.0),
+                                                                          ('Projeto 28', 'Descrição do projeto 28.', 1, NULL, 8, 100.0),
+                                                                          ('Projeto 29', 'Descrição do projeto 29.', 1, NULL, 9, 200.0),
+                                                                          ('Projeto 30', 'Descrição do projeto 30.', 1, NULL, 10, 12.0),
+                                                                          ('Projeto 31', 'Descrição do projeto 31.', 0, NULL, 1, 80.0),
+                                                                          ('Projeto 32', 'Descrição do projeto 32.', 0, NULL, 2, 90.0),
+                                                                          ('Projeto 33', 'Descrição do projeto 33.', 0, NULL, 3, 300.0),
+                                                                          ('Projeto 34', 'Descrição do projeto 34.', 0, NULL, 4, 500.0),
+                                                                          ('Projeto 35', 'Descrição do projeto 35.', 0, NULL, 5, 700.0),
+                                                                          ('Projeto 36', 'Descrição do projeto 36.', 1, NULL, 6, 1000.0),
+                                                                          ('Projeto 37', 'Descrição do projeto 37.', 1, NULL, 7, 2000.0),
+                                                                          ('Projeto 38', 'Descrição do projeto 38.', 1, NULL, 8, 15.0),
+                                                                          ('Projeto 39', 'Descrição do projeto 39.', 1, NULL, 9, 25.0),
+                                                                          ('Projeto 40', 'Descrição do projeto 40.', 1, NULL, 10, 35.0);
 
 INSERT INTO R_Collaborator_Client_Project (fk_collaborator, fk_client, fk_project) VALUES
                                                                                        (1, 1, 1),
@@ -314,7 +310,6 @@ INSERT INTO Reservation (start_time, end_time, day, fk_collaborator_cod_user, fk
                                                                                                       ('12:30:00', '14:30:00', '2024-11-24', 4, 9),
                                                                                                       ('14:00:00', '16:00:00', '2024-11-25', 5, 10);
 
-
 INSERT INTO Report (report_date, description) VALUES
                                                   ('2024-11-01', 'Relatório inicial do projeto de infraestrutura.'),
                                                   ('2024-11-02', 'Análise preliminar de impacto ambiental.'),
@@ -327,7 +322,6 @@ INSERT INTO Report (report_date, description) VALUES
                                                   ('2024-11-09', 'Relatório de análise de riscos.'),
                                                   ('2024-11-10', 'Resumo final do mês.');
 
-
 INSERT INTO RCollaborator_Project_Report (fk_collaborator_user, fk_project, fk_report) VALUES
                                                                                            (1, 1, 1),
                                                                                            (2, 2, 2),
@@ -339,4 +333,3 @@ INSERT INTO RCollaborator_Project_Report (fk_collaborator_user, fk_project, fk_r
                                                                                            (3, 8, 8),
                                                                                            (4, 9, 9),
                                                                                            (5, 10, 10);
-

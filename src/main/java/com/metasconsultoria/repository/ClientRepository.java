@@ -19,9 +19,26 @@ public class ClientRepository {
 
         String sql = "INSERT INTO Client (cod_user, fk_city) VALUES (?, ?)";
 
+        String email = client.getUser().getEmail();
+        client.getUser().setPassword("Password13");
+
+        if (UserRepository.selectByEmail(email) == null) {
+            UserRepository.insertInto(client.getUser());
+            client.setUser(UserRepository.selectByEmail(email));
+        }
+
+        String cityName = client.getCity().getName();
+        client.getCity().setState("No State");
+        String state = client.getCity().getState();
+        
+
+        CityRepository.insetInto(client.getCity());
+        client.setCity(CityRepository.selectCityByNameAndState(cityName, state));
+       
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, client.getIdUser());
-            ps.setInt(2, client.getIdCity());
+            ps.setInt(1, client.getUser().getIdUser());
+            ps.setInt(2, client.getCity().getIdCity());
 
             ps.executeUpdate();
         }
@@ -49,8 +66,8 @@ public class ClientRepository {
         String sql = "UPDATE Client SET fk_city = ? WHERE cod_user = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, client.getIdCity());
-            ps.setInt(2, client.getIdUser());
+            ps.setInt(1, client.getCity().getIdCity());
+            ps.setInt(2, client.getUser().getIdUser());
 
             ps.executeUpdate();
         }
@@ -69,8 +86,8 @@ public class ClientRepository {
 
             while (rs.next()) {
                 Client client = Client.builder()
-                        .idUser(rs.getInt("cod_user"))
-                        .idCity(rs.getInt("fk_city"))
+                        .user(UserRepository.selectById(rs.getInt("cod_user")))
+                        .city(CityRepository.selectById(rs.getInt("fk_city")))
                         .build();
 
                 clients.add(client);
@@ -93,8 +110,8 @@ public class ClientRepository {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     client = Client.builder()
-                            .idUser(rs.getInt("cod_user"))
-                            .idCity(rs.getInt("fk_city"))
+                            .user(UserRepository.selectById(rs.getInt("cod_user")))
+                            .city(CityRepository.selectById(rs.getInt("fk_city")))
                             .build();
                 }
             }
@@ -119,8 +136,8 @@ public class ClientRepository {
             try (ResultSet rs = ps.executeQuery()){
                 while (rs.next()) {
                     Client client = Client.builder()
-                            .idUser(rs.getInt("client.cod_user"))
-                            .idCity(rs.getInt("client.fk_city"))
+                            .user(UserRepository.selectById(rs.getInt("cod_user")))
+                            .city(CityRepository.selectById(rs.getInt("fk_city")))
                             .build();
 
                     clients.add(client);
