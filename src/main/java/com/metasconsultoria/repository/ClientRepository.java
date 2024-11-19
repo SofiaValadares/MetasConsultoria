@@ -24,8 +24,6 @@ public class ClientRepository {
             ps.setInt(2, client.getIdCity());
 
             ps.executeUpdate();
-
-            ps.close();
         }
 
         conn.close();
@@ -40,8 +38,6 @@ public class ClientRepository {
             ps.setInt(1, id);
 
             ps.executeUpdate();
-
-            ps.close();
         }
 
         conn.close();
@@ -57,8 +53,6 @@ public class ClientRepository {
             ps.setInt(2, client.getIdUser());
 
             ps.executeUpdate();
-
-            ps.close();
         }
 
         conn.close();
@@ -81,9 +75,6 @@ public class ClientRepository {
 
                 clients.add(client);
             }
-
-            rs.close();
-            ps.close();
         }
 
         conn.close();
@@ -106,11 +97,7 @@ public class ClientRepository {
                             .idCity(rs.getInt("fk_city"))
                             .build();
                 }
-
-                rs.close();
             }
-
-            ps.close();
         }
 
         conn.close();
@@ -138,14 +125,34 @@ public class ClientRepository {
 
                     clients.add(client);
                 }
-
-                rs.close();
             }
-
-            ps.close();
         }
 
         conn.close();
         return clients;
     }
+
+
+
+    public static int countData() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
+        String sql = "SELECT COUNT(DISTINCT cod_user) FROM Client";
+
+        int count = 0;
+
+        assert conn != null;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            }
+        }
+
+        conn.close();
+        return count;
+    }
+
+
 }

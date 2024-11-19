@@ -120,4 +120,24 @@ public class ProjectRepository {
         conn.close();
         return project;
     }
+
+    public static int countData() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
+        String sql = "SELECT COUNT(DISTINCT cod_project) FROM Project WHERE date is null";
+
+        int count = 0;
+
+        assert conn != null;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            }
+        }
+
+        conn.close();
+        return count;
+    }
 }

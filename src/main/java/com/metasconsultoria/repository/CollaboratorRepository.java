@@ -124,14 +124,31 @@ public class CollaboratorRepository {
                             .supervisedBy(rs.getObject("supervised_by") != null ? rs.getInt("supervised_by") : null)
                             .build();
                 }
-
-                rs.close();
             }
 
-            ps.close();
         }
 
         conn.close();
         return collaborator;
+    }
+
+    public static int countData() throws SQLException {
+        Connection conn = ConnectDatabase.getConnection();
+
+        String sql = "SELECT COUNT(DISTINCT cod_user) FROM Collaborator";
+
+        int count = 0;
+
+        assert conn != null;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            }
+        }
+
+        conn.close();
+        return count;
     }
 }
