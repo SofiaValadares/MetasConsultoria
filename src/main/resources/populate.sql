@@ -5,8 +5,7 @@ CREATE TABLE User (
                       cod_user 		INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
                       name 			VARCHAR(40) NOT NULL,
                       email 		VARCHAR(31) NOT NULL UNIQUE,
-                      password 		VARCHAR(16) NOT NULL,
-                      create_date   DATE DEFAULT  CURRENT_DATE
+                      password 		VARCHAR(16) NOT NULL
 );
 
 CREATE TABLE Collaborator (
@@ -127,9 +126,9 @@ CREATE TABLE RCollaborator_Project_Report (
         FOREIGN KEY (fk_report) REFERENCES Report(cod_report)
 );
 
-CREATE TRIGGER password_min
-    AFTER UPDATE
-    ON User
+
+CREATE TRIGGER validate_password
+    BEFORE UPDATE ON User
     FOR EACH ROW
 BEGIN
     IF CHAR_LENGTH(NEW.password) < 8 OR CHAR_LENGTH(NEW.password) > 16 THEN
@@ -148,6 +147,9 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A senha deve conter ao menos um número.';
     END IF;
 END;
+
+
+
 
 
 INSERT INTO User (name, email, password) VALUES
@@ -287,3 +289,54 @@ INSERT INTO R_Collaborator_Client_Project (fk_collaborator, fk_client, fk_projec
                                                                                        (3, 8, 38),
                                                                                        (4, 9, 39),
                                                                                        (5, 10, 40);
+
+INSERT INTO Next_Steps (next_steps, fk_project) VALUES
+                                                    ('Finalizar a contratação de fornecedores', 1),
+                                                    ('Elaborar plano de execução', 2),
+                                                    ('Agendar reuniões com stakeholders', 3),
+                                                    ('Realizar análise de impacto', 4),
+                                                    ('Enviar documentação para aprovação', 5),
+                                                    ('Definir cronograma de implementação', 6),
+                                                    ('Ajustar orçamento', 7),
+                                                    ('Contratar equipe técnica', 8),
+                                                    ('Identificar riscos e mitigações', 9),
+                                                    ('Iniciar campanhas de conscientização', 10);
+
+INSERT INTO Reservation (start_time, end_time, day, fk_collaborator_cod_user, fk_client_cod_user) VALUES
+                                                                                                      ('09:00:00', '11:00:00', '2024-11-20', 1, 1),
+                                                                                                      ('13:00:00', '15:00:00', '2024-11-20', 2, 2),
+                                                                                                      ('10:00:00', '12:00:00', '2024-11-21', 3, 3),
+                                                                                                      ('14:00:00', '16:00:00', '2024-11-21', 4, 4),
+                                                                                                      ('15:00:00', '17:00:00', '2024-11-22', 5, 5),
+                                                                                                      ('08:00:00', '10:00:00', '2024-11-23', 1, 6),
+                                                                                                      ('11:00:00', '13:00:00', '2024-11-23', 2, 7),
+                                                                                                      ('09:30:00', '11:30:00', '2024-11-24', 3, 8),
+                                                                                                      ('12:30:00', '14:30:00', '2024-11-24', 4, 9),
+                                                                                                      ('14:00:00', '16:00:00', '2024-11-25', 5, 10);
+
+
+INSERT INTO Report (report_date, description) VALUES
+                                                  ('2024-11-01', 'Relatório inicial do projeto de infraestrutura.'),
+                                                  ('2024-11-02', 'Análise preliminar de impacto ambiental.'),
+                                                  ('2024-11-03', 'Resumo das reuniões com stakeholders.'),
+                                                  ('2024-11-04', 'Apresentação dos resultados parciais.'),
+                                                  ('2024-11-05', 'Relatório de progresso semanal.'),
+                                                  ('2024-11-06', 'Revisão das metas do projeto.'),
+                                                  ('2024-11-07', 'Atualização sobre a contratação de fornecedores.'),
+                                                  ('2024-11-08', 'Planejamento de novas fases do projeto.'),
+                                                  ('2024-11-09', 'Relatório de análise de riscos.'),
+                                                  ('2024-11-10', 'Resumo final do mês.');
+
+
+INSERT INTO RCollaborator_Project_Report (fk_collaborator_user, fk_project, fk_report) VALUES
+                                                                                           (1, 1, 1),
+                                                                                           (2, 2, 2),
+                                                                                           (3, 3, 3),
+                                                                                           (4, 4, 4),
+                                                                                           (5, 5, 5),
+                                                                                           (1, 6, 6),
+                                                                                           (2, 7, 7),
+                                                                                           (3, 8, 8),
+                                                                                           (4, 9, 9),
+                                                                                           (5, 10, 10);
+

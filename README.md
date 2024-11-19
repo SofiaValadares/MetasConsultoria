@@ -10,10 +10,10 @@ Para testar o repositório localmente, siga as instruções detalhadas no arquiv
 
 ## FERRAMENTAS UTILIZADAS
 - **IDEs**: VS Code, IntelliJ IDEA, DBeaver, DataGrip, WebStorm
-- **Linguagens**: Java, MySQL, JavaScript, HTML, CSS
+- **Linguagens**: Java 17, MySQL, JavaScript, HTML, CSS
 - **Frameworks**: React
 - **Conexão com Banco de Dados**: JDBC
-- **Outras Ferramentas**: Docker
+- **Outras Ferramentas**: Docker, Maven
 
 ## PRÉ-REQUISITOS
 1. Instalar o [Java](https://www.oracle.com/br/java/).
@@ -44,7 +44,7 @@ Certifique-se de ter o Docker aberto com permissão de administrador e aguarde a
 Para criar a imagem do banco de dados, execute:
 
 ```bash
-docker run -d --name mysql_metas_container -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 mysql:8.0
+docker run -d --name mysql_metas_container -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3307:3306 mysql:8.0
 ```
 
 Verifique o status da imagem com:
@@ -81,5 +81,5 @@ mvn clean package
 Em seguida, inicie o projeto:
 
 ```bash
-mvn exec:java
+mvn spring-boot:run
 ```
